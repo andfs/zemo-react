@@ -16,12 +16,28 @@ class SegmentedControlAndroid extends Component {
 	  super(props);
 	
 	  this.state = {
-	  	selectedIndex: 0
+	  	selectedIndex: props.abaSelecionada
 	  };
 	}
 
 	onChange(selectedOption, selectedIndex) {
 		let index = selectedOption;
+		switch(index)
+		{
+			case 0:
+				this.props.home.setState({procurarVaga: true});
+				break;
+
+			case 1:
+				this.props.home.setState({procurarVaga: false});
+				this.props.home.estacionar();
+				break;
+
+			case 2:
+				this.props.home.setState({procurarVaga: true});
+				this.props.home.liberarVaga();
+				break;
+		}
 	}
 
 	render() {

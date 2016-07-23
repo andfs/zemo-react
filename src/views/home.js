@@ -16,6 +16,8 @@ export default class Home extends Component {
 	  super(props);
 	
 	  this.state = {
+	  	abaSelecionada: 0,
+	  	procurarVaga: true,
 	  	markers: [],
 	  	ultimaPosicaoCarregamento: {
 	  		latitude: -19.907342,
@@ -113,7 +115,7 @@ export default class Home extends Component {
 						))}
 				    </MapView>
 
-			    	<SegmentedControl/>
+			    	<SegmentedControl abaSelecionada={this.state.abaSelecionada} home={this}/>
 				</View>
 		);
 	}
