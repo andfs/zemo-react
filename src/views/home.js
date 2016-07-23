@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
+import SegmentedControl from '../comp/segmentedControl';
 
 export default class Home extends Component {
 
@@ -111,6 +112,7 @@ export default class Home extends Component {
 					    />
 					))}
 			    </MapView>
+			    <SegmentedControl/>
 			</View>
 		);
 	}
