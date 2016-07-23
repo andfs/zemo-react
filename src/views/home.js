@@ -92,28 +92,29 @@ export default class Home extends Component {
 	
 	render() {
 		return(
-			<View style={styles.container}>
-			    <MapView style={styles.map}
-			      ref="map"
-			      region={this.state.region}
-			      onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-			    >
-			    	<MapView.Marker
-					  coordinate={this.state.carPosition}
-					  image={require('../../resources/img/car.png')}
-					/>
+				<View style={styles.container}>
+				    <MapView style={styles.map}
+				      ref="map"
+				      region={this.state.region}
+				      onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+				    >
+				    	<MapView.Marker
+						  coordinate={this.state.carPosition}
+						  image={require('../../resources/img/car.png')}
+						/>
 
-					{this.state.markers.map(marker => (
-					    <MapView.Marker
-					      coordinate={marker.latlng}
-					      title={marker.title}
-					      description={marker.description}
-					      image={require('../../resources/img/'+ marker.icone)}
-					    />
-					))}
-			    </MapView>
-			    <SegmentedControl/>
-			</View>
+						{this.state.markers.map(marker => (
+						    <MapView.Marker
+						      coordinate={marker.latlng}
+						      title={marker.title}
+						      description={marker.description}
+						      image={require('../../resources/img/'+ marker.icone)}
+						    />
+						))}
+				    </MapView>
+
+			    	<SegmentedControl/>
+				</View>
 		);
 	}
 }

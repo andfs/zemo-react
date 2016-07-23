@@ -8,8 +8,35 @@ import {
   SegmentedControlIOS,
 } from 'react-native';
 
+import { SegmentedControls } from 'react-native-radio-buttons'
 
-export default class SegmentedControl extends Component {
+class SegmentedControlAndroid extends Component {
+
+	constructor(props) {
+	  super(props);
+	
+	  this.state = {
+	  	selectedIndex: 0
+	  };
+	}
+
+	onChange(selectedOption, selectedIndex) {
+		let index = selectedOption;
+	}
+
+	render() {
+		const options = [" Procurando Vagas ", "    Estacionar    ", "   Liberar Vaga   "];
+		return(
+			<SegmentedControls
+			  options={ options }
+			  onSelection={ this.onChange.bind(this) }
+			  selectedIndex={ this.state.selectedIndex }
+			/>
+		);
+	}
+}
+
+class SegmentedControlIphone extends Component {
 
 	constructor(props) {
 	  super(props);
@@ -25,11 +52,14 @@ export default class SegmentedControl extends Component {
 	
 	render() {
 		return (
-				<SegmentedControlIOS style={{flex: 1}}
-				  values={['Procurando Vagas', 'Estacionar', 'LiberarVaga']}
-				  selectedIndex={this.state.selectedIndex}
+				<SegmentedControlIOS 
+				  values={["Vagas", "Estacionar", "LiberarVaga"]}
+				  selectedOption={this.state.selectedIndex}
 				  onChange={this.onChange.bind(this)}
 				/>
 		);
 	}
 }
+
+const SegmentedControl = Platform.OS === 'ios' ? SegmentedControlIphone : SegmentedControlAndroid;
+module.exports = SegmentedControl;
