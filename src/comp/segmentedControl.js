@@ -12,41 +12,40 @@ import { SegmentedControls } from 'react-native-radio-buttons'
 
 class SegmentedControlAndroid extends Component {
 
-	constructor(props) {
-	  super(props);
-	
-	  this.state = {
-	  	selectedIndex: props.abaSelecionada
-	  };
-	}
-
 	onChange(selectedOption, selectedIndex) {
-		let index = selectedOption;
+		let index = selectedIndex;
 		switch(index)
 		{
 			case 0:
-				this.props.home.setState({procurarVaga: true});
+				this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
 				break;
 
 			case 1:
-				this.props.home.setState({procurarVaga: false});
+				this.props.home.setState({procurarVaga: false, abaSelecionada: 1});
 				this.props.home.estacionar();
 				break;
 
 			case 2:
-				this.props.home.setState({procurarVaga: true});
+				this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
 				this.props.home.liberarVaga();
 				break;
 		}
 	}
 
 	render() {
-		const options = [" Procurando Vagas ", "    Estacionar    ", "   Liberar Vaga   "];
+		let options = [];
+		if(this.props.abaSelecionada == 1) {
+			options = [" Procurando Vagas ", "    Estacionado    ", "   Liberar Vaga   "];
+		}
+		else {
+			options = [" Procurando Vagas ", "    Estacionar    ", "   Liberar Vaga   "];	
+		}
+		
 		return(
 			<SegmentedControls
 			  options={ options }
 			  onSelection={ this.onChange.bind(this) }
-			  selectedIndex={ this.state.selectedIndex }
+			  selectedIndex={ this.props.abaSelecionada }
 			/>
 		);
 	}

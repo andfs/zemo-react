@@ -36,6 +36,14 @@ export default class Home extends Component {
 	  };
 	}
 
+	estacionar() {
+
+	}
+
+	liberarVaga() {
+
+	}
+
 	carregarNovasVagas(currentPosition) {
 		var R = 6371; // km  
 		var dLat = (currentPosition.latitude - this.state.ultimaPosicaoCarregamento.latitude) * Math.PI / 180;  
@@ -45,17 +53,17 @@ export default class Home extends Component {
 		        Math.cos(currentPosition.latitude * Math.PI / 180) *   
 		        Math.sin(dLon / 2) * Math.sin(dLon / 2);   
 		var c = 2 * Math.asin(Math.sqrt(a));   
-		var d = R * c;	
+		var d = R * c;
+		d = d * 1000;	
 
-		if(d >= 500) {
+		if(d >= 50) {
 			return true
 		}
 		return false;
 	}
 
 	componentDidMount() {
-		navigator.geolocation.getCurrentPosition((position) => {
-				let initialPosition = JSON.stringify(position);
+		navigator.geolocation.getCurrentPosition((initialPosition) => {
 		        this.setState({'region.latitude': initialPosition.latitude, 'region.longitude': initialPosition.longitude});
 		        this.setState({'carPosition.latitude': initialPosition.latitude, 'carPosition.longitude': initialPosition.longitude});
 		        this.setState({'ultimaPosicaoCarregamento.latitude': initialPosition.latitude, 'ultimaPosicaoCarregamento.longitude': initialPosition.longitude});
@@ -64,32 +72,34 @@ export default class Home extends Component {
 		    {enableHighAccuracy: true, timeout: 20000}
 		);
 
-		navigator.geolocation.watchPosition((position) => {
-				let currentPosition = JSON.stringify(position);
-				this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
-				this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
-				
-				let carregarNovasVagas = this.carregarNovasVagas(currentPosition); 
-				if(carregarNovasVagas) {
-					//Buscar  novas vagas/estacionamentos
+		navigator.geolocation.watchPosition((currentPosition) => {
+				if(this.state.procurarVaga) {
+					this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
+					this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
+					this.setState({'ultimaPosicaoCarregamento.latitude': initialPosition.latitude, 'ultimaPosicaoCarregamento.longitude': initialPosition.longitude});
 				}
+				
 			},
 			(error) => alert(JSON.stringify(error)),
 		    {enableHighAccuracy: true, timeout: 20000}
 		);
 	}
 
-	onRegionChangeComplete(region) {
-		region = JSON.stringify(region);
-		
-		let northeast = {
-	      latitude: region.latitude + region.latitudeDelta / 2,
-	      longitude: region.longitude + region.longitudeDelta / 2,
-	    }
-	    , southwest = {
-	      latitude: region.latitude - region.latitudeDelta / 2,
-	      longitude: region.longitude - region.longitudeDelta / 2,
-	    }
+	onRegionChange(region) {
+
+		let carregarNovasVagas = this.carregarNovasVagas(region); 
+		if(carregarNovasVagas) {
+			//Buscar  novas vagas/estacionamentos
+
+			let northeast = {
+		      latitude: region.latitude + region.latitudeDelta / 2,
+		      longitude: region.longitude + region.longitudeDelta / 2,
+		    }
+		    , southwest = {
+		      latitude: region.latitude - region.latitudeDelta / 2,
+		      longitude: region.longitude - region.longitudeDelta / 2,
+		    }
+		}
 	}
 	
 	render() {
@@ -98,7 +108,7 @@ export default class Home extends Component {
 				    <MapView style={styles.map}
 				      ref="map"
 				      region={this.state.region}
-				      onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+				      onRegionChange={this.onRegionChange.bind(this)}
 				    >
 				    	<MapView.Marker
 						  coordinate={this.state.carPosition}
