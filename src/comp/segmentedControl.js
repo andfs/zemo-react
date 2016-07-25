@@ -22,7 +22,7 @@ class SegmentedControlAndroid extends Component {
 
 			case 1:
 				this.props.home.setState({procurarVaga: false, abaSelecionada: 1});
-				this.props.home.estacionar();
+				this.props.home.showActionSheet();
 				break;
 
 			case 2:
@@ -40,14 +40,20 @@ class SegmentedControlAndroid extends Component {
 		else {
 			options = [" Procurando Vagas ", "    Estacionar    ", "   Liberar Vaga   "];	
 		}
-		
-		return(
-			<SegmentedControls
-			  options={ options }
-			  onSelection={ this.onChange.bind(this) }
-			  selectedIndex={ this.props.abaSelecionada }
-			/>
-		);
+		if(this.props.home.state.showControls) {
+			return(
+				<View>
+					<SegmentedControls
+					  options={ options }
+					  onSelection={ this.onChange.bind(this) }
+					  selectedIndex={ this.props.abaSelecionada }
+					/>
+				</View>
+			);
+		}
+		else {
+			return (<View></View>);
+		}
 	}
 }
 
@@ -63,12 +69,12 @@ class SegmentedControlIphone extends Component {
 
 			case 1:
 				this.props.home.setState({procurarVaga: false, abaSelecionada: 1});
-				this.props.home.estacionar();
+				this.props.home.showActionSheet();
 				break;
 
 			case 2:
 				this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
-				this.props.home.liberarVaga();
+				this.props.home.liberarVagaActionSheet();
 				break;
 		}
 	}
@@ -82,13 +88,18 @@ class SegmentedControlIphone extends Component {
 			options = [" Procurando Vagas ", "    Estacionar    ", "   Liberar Vaga   "];	
 		}
 
-		return (
+		if(this.props.home.state.showControls) {
+			return (
 				<SegmentedControlIOS 
 				  values={options}
 				  selectedOption={this.state.selectedIndex}
 				  onChange={this.onChange.bind(this)}
 				/>
-		);
+			);
+		}
+		else {
+			return (<View></View>);
+		}
 	}
 }
 

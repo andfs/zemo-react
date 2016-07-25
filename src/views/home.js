@@ -9,6 +9,7 @@ import {
 
 import MapView from 'react-native-maps';
 import SegmentedControl from '../comp/segmentedControl';
+import ParkoActionSheet from '../comp/actionSheet';
 
 export default class Home extends Component {
 
@@ -16,6 +17,7 @@ export default class Home extends Component {
 	  super(props);
 	
 	  this.state = {
+	  	showControls: true,
 	  	abaSelecionada: 0,
 	  	procurarVaga: true,
 	  	markers: [],
@@ -36,8 +38,8 @@ export default class Home extends Component {
 	  };
 	}
 
-	estacionar() {
-
+	estacionar(tipoVaga) {
+		this.setState({showControls: true});
 	}
 
 	liberarVaga() {
@@ -76,7 +78,7 @@ export default class Home extends Component {
 				if(this.state.procurarVaga) {
 					this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
 					this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
-					this.setState({'ultimaPosicaoCarregamento.latitude': initialPosition.latitude, 'ultimaPosicaoCarregamento.longitude': initialPosition.longitude});
+					this.setState({'ultimaPosicaoCarregamento.latitude': currentPosition.latitude, 'ultimaPosicaoCarregamento.longitude': currentPosition.longitude});
 				}
 				
 			},
@@ -101,6 +103,16 @@ export default class Home extends Component {
 		    }
 		}
 	}
+
+	showActionSheet() {
+		this.refs.parkoActionSheet.showActionSheet();
+		this.setState({showControls: false});
+	}
+
+	hideActionSheet() {
+		this.refs.parkoActionSheet.onCancel();	
+		this.setState({showControls: true});
+	}
 	
 	render() {
 		return(
@@ -124,7 +136,7 @@ export default class Home extends Component {
 						    />
 						))}
 				    </MapView>
-
+				    <ParkoActionSheet ref="parkoActionSheet" home={this}/>
 			    	<SegmentedControl abaSelecionada={this.state.abaSelecionada} home={this}/>
 				</View>
 		);
