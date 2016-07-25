@@ -22,7 +22,12 @@ var CANCEL_INDEX = 3;
 class ParkoActionSheetLiberarIOS extends Component {
 
 	buttonClicked(buttonIndex) {
-		this.props.home.liberarVaga(buttonIndex);
+		if(buttonIndex == 3) {
+			this.setState({show:false});
+		}
+		else {
+			this.props.home.liberarVaga(buttonIndex);
+		}
 	}
 
 	showActionSheet() {
@@ -46,8 +51,13 @@ class ParkoActionSheetLiberarAndroid extends Component {
 	  };
 	}
 
+	showActionSheet() {
+	    this.setState({show: true});
+	}
+
 	onCancel() {
-       this.setState({show:false});
+		this.props.home.setState({showControls:true, procurarVaga: true, abaSelecionada: 1});
+       	this.setState({show:false});
     }
 
     showActionSheetLiberar() {

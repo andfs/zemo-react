@@ -47,8 +47,7 @@ export default class Home extends Component {
 	}
 
 	liberarVaga(flanelinha) {
-		this.setState({showControls: true});
-		this.setState({flanelinha: flanelinha});
+		this.setState({showControls: true, flanelinha: flanelinha, abaSelecionada: 0, tipoVaga: null});
 	}
 
 	carregarNovasVagas(currentPosition) {
@@ -114,7 +113,7 @@ export default class Home extends Component {
 		this.setState({showControls: false});
 	}
 
-	liberarVagaActionSheet() {
+	showActionSheetLiberar() {
 		this.refs.parkoActionSheetLiberar.showActionSheet();
 		this.setState({showControls: false});	
 	}

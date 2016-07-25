@@ -17,7 +17,12 @@ class SegmentedControlAndroid extends Component {
 		switch(index)
 		{
 			case 0:
-				this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
+				if(this.props.home.state.abaSelecionada == 1) {
+					this.props.home.setState({procurarVaga: false, abaSelecionada: 1});
+				}
+				else {
+					this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
+				}
 				break;
 
 			case 1:
@@ -26,8 +31,13 @@ class SegmentedControlAndroid extends Component {
 				break;
 
 			case 2:
-				this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
-				this.props.home.liberarVaga();
+				if(this.props.home.state.abaSelecionada == 1) {
+					this.props.home.setState({procurarVaga: true, abaSelecionada: 2});
+					this.props.home.showActionSheetLiberar();
+				}
+				else {
+					this.props.home.setState({abaSelecionada: 0});
+				}
 				break;
 		}
 	}
@@ -74,7 +84,7 @@ class SegmentedControlIphone extends Component {
 
 			case 2:
 				this.props.home.setState({procurarVaga: false, abaSelecionada: 2});
-				this.props.home.liberarVagaActionSheet();
+				this.props.home.showActionSheetLiberar();
 				break;
 		}
 	}

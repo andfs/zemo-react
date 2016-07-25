@@ -24,7 +24,18 @@ var CANCEL_INDEX = 5;
 class ParkoActionSheetIOS extends Component {
 
 	buttonClicked(buttonIndex) {
-		this.props.home.estacionar(buttonIndex);
+		if(buttonIndex == 5) {
+			this.setState({show:false});
+	       	if(this.props.home.state.tipoVaga != null) { //ja esta estacionado. Deve liberar a vaga
+	       		this.props.home.setState({showControls:true});
+	       	}
+	       	else {
+	       		this.props.home.setState({showControls:true, procurarVaga: true, abaSelecionada: 0});
+	       	}
+		}
+		else {
+			this.props.home.estacionar(buttonIndex);
+		}
 	}
 
 	showActionSheet() {
@@ -54,7 +65,7 @@ class ParkoActionSheetAndroid extends Component {
        		this.props.home.setState({showControls:true});
        }
        else {
-       		this.props.home.setState({showControls:true, procurarVaga: true, abaSelecionada: 0});
+       		this.props.home.setState({showControls:true, procurarVaga: true, abaSelecionada: 0, tipoVaga: null});
        }
     }
 
