@@ -73,7 +73,7 @@ class SegmentedControlIphone extends Component {
 				break;
 
 			case 2:
-				this.props.home.setState({procurarVaga: true, abaSelecionada: 0});
+				this.props.home.setState({procurarVaga: false, abaSelecionada: 2});
 				this.props.home.liberarVagaActionSheet();
 				break;
 		}

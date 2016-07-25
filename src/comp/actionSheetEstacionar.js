@@ -5,7 +5,6 @@ import {
   View,
   Platform,
   ActionSheetIOS,
-  StyleSheet
 } from 'react-native';
 
 var ActionSheet = require('@remobile/react-native-action-sheet');
@@ -51,7 +50,7 @@ class ParkoActionSheetAndroid extends Component {
 
 	onCancel() {
        this.setState({show:false});
-       if(this.props.home.state.abaSelecionada == 1) { //ja esta estacionado. Deve liberar a vaga
+       if(this.props.home.state.tipoVaga != null) { //ja esta estacionado. Deve liberar a vaga
        		this.props.home.setState({showControls:true});
        }
        else {
@@ -106,5 +105,5 @@ class ParkoActionSheetAndroid extends Component {
 	}
 }
 
-const ParkoActionSheet = Platform.OS === 'ios' ? ParkoActionSheetIOS : ParkoActionSheetAndroid;
-module.exports = ParkoActionSheet;
+const ParkoActionSheetEstacionar = Platform.OS === 'ios' ? ParkoActionSheetIOS : ParkoActionSheetAndroid;
+module.exports = ParkoActionSheetEstacionar;

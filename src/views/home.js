@@ -9,7 +9,8 @@ import {
 
 import MapView from 'react-native-maps';
 import SegmentedControl from '../comp/segmentedControl';
-import ParkoActionSheet from '../comp/actionSheet';
+import ParkoActionSheetEstacionar from '../comp/actionSheetEstacionar';
+import ParkoActionSheetLiberar from '../comp/actionSheetLiberar';
 
 export default class Home extends Component {
 
@@ -17,6 +18,8 @@ export default class Home extends Component {
 	  super(props);
 	
 	  this.state = {
+	  	tipoVaga: null,
+	  	flanelinha: null,
 	  	showControls: true,
 	  	abaSelecionada: 0,
 	  	procurarVaga: true,
@@ -40,10 +43,12 @@ export default class Home extends Component {
 
 	estacionar(tipoVaga) {
 		this.setState({showControls: true});
+		this.setState({tipoVaga: tipoVaga});
 	}
 
-	liberarVaga() {
-
+	liberarVaga(flanelinha) {
+		this.setState({showControls: true});
+		this.setState({flanelinha: flanelinha});
 	}
 
 	carregarNovasVagas(currentPosition) {
@@ -109,6 +114,11 @@ export default class Home extends Component {
 		this.setState({showControls: false});
 	}
 
+	liberarVagaActionSheet() {
+		this.refs.parkoActionSheetLiberar.showActionSheet();
+		this.setState({showControls: false});	
+	}
+
 	hideActionSheet() {
 		this.refs.parkoActionSheet.onCancel();	
 		this.setState({showControls: true});
@@ -136,7 +146,8 @@ export default class Home extends Component {
 						    />
 						))}
 				    </MapView>
-				    <ParkoActionSheet ref="parkoActionSheet" home={this}/>
+				    <ParkoActionSheetEstacionar ref="parkoActionSheet" home={this}/>
+				    <ParkoActionSheetLiberar ref="parkoActionSheetLiberar" home={this}/>
 			    	<SegmentedControl abaSelecionada={this.state.abaSelecionada} home={this}/>
 				</View>
 		);
