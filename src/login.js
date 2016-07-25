@@ -65,7 +65,6 @@ export default class Login extends Component {
             var context = this;
             Meteor.call('validarId', accessToken, function (error, result) {
               context.setState({ok: true});
-
               if(error || !result) {
                   context.setState({logado: false});
               }
@@ -102,9 +101,17 @@ export default class Login extends Component {
   }
 
   loginProprio() {
-      var email = this.state.email;
-      var senha = this.state.senha;
-      var context = this;
+      let email = this.state.email;
+      let senha = this.state.senha;
+      if(email.length == 0) {
+          this.setState({erro: "E-mail inválido."});
+      }
+      if(senha.length == 0) {
+          this.setState({erro: "Senha inválida."}); 
+      }
+
+      let context = this;
+      
       this.setState({ok: true});
       Meteor.loginWithPassword(email, senha, function(erro) {
           if(erro) {
