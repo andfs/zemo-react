@@ -11,6 +11,7 @@ import MapView from 'react-native-maps';
 import SegmentedControl from '../comp/segmentedControl';
 import ParkoActionSheetEstacionar from '../comp/actionSheetEstacionar';
 import ParkoActionSheetLiberar from '../comp/actionSheetLiberar';
+import Meteor from 'react-native-meteor';
 
 export default class Home extends Component {
 
@@ -23,7 +24,8 @@ export default class Home extends Component {
 	  	showControls: true,
 	  	abaSelecionada: 0,
 	  	procurarVaga: true,
-	  	markers: [],
+	  	markersVagas: [],
+	  	markersEstacionamentos: [],
 	  	ultimaPosicaoCarregamento: {
 	  		latitude: -19.907342,
 	      	longitude: -43.975907,	
@@ -60,7 +62,7 @@ export default class Home extends Component {
 		        Math.sin(dLon / 2) * Math.sin(dLon / 2);   
 		var c = 2 * Math.asin(Math.sqrt(a));   
 		var d = R * c;
-		d = d * 1000;	
+		d = d * 1000;	//metros
 
 		if(d >= 50) {
 			return true
@@ -91,12 +93,10 @@ export default class Home extends Component {
 		);
 	}
 
-	onRegionChange(region) {
+	onRegionChangeComplete(region) {
 
 		let carregarNovasVagas = this.carregarNovasVagas(region); 
 		if(carregarNovasVagas) {
-			//Buscar  novas vagas/estacionamentos
-
 			let northeast = {
 		      latitude: region.latitude + region.latitudeDelta / 2,
 		      longitude: region.longitude + region.longitudeDelta / 2,
@@ -105,6 +105,20 @@ export default class Home extends Component {
 		      latitude: region.latitude - region.latitudeDelta / 2,
 		      longitude: region.longitude - region.longitudeDelta / 2,
 		    }
+
+		    let context = this;
+		    Meteor.call('buscarVagas', {southwest: southwest, northeast: northeast}, function (error, result) {
+		    	if(error) {
+		    		alert("Erro ao buscar vagas/estacionamentos nas proximidades.");
+		    	}
+		    	else {
+		    		context.setState({
+		    							markersVagas: result.vagas, 
+		    							markersEstacionamentos: result.estacionamentos, 
+		    							region: region
+		    						});
+		    	}
+		    });
 		}
 	}
 
@@ -129,19 +143,37 @@ export default class Home extends Component {
 				    <MapView style={styles.map}
 				      ref="map"
 				      region={this.state.region}
-				      onRegionChange={this.onRegionChange.bind(this)}
+				      onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
 				    >
 				    	<MapView.Marker
 						  coordinate={this.state.carPosition}
 						  image={require('../../resources/img/car.png')}
 						/>
 
-						{this.state.markers.map(marker => (
+						{this.state.markersVagas.map(marker => (
 						    <MapView.Marker
-						      coordinate={marker.latlng}
-						      title={marker.title}
-						      description={marker.description}
-						      image={require('../../resources/img/'+ marker.icone)}
+						      key={marker._id}	
+						      coordinate={marker.localidade}
+						      title={marker.tipoVaga}
+						      pinColor={
+						      				marker.tipoVaga == 0 ? 'white' : 
+						      				marker.tipoVaga == 1 ? 'blue'  : 
+						      				marker.tipoVaga == 2 ? 'red'   :
+						      				marker.tipoVaga == 3 ? 'yellow':
+						      				'brown'}
+						    />
+						))}
+
+						{this.state.markersEstacionamentos.map(marker => (
+						    <MapView.Marker
+						      key={marker._id}	
+						      coordinate={marker.localidade}
+						      title={marker.nome}
+						      description={
+						      				"Valor Fração: R$ " + marker.valorFracao + " - " + 
+						      				"Valor Hora: R$ " + marker.valorHora
+						      			  }
+						      image={require('../../resources/img/parking.png')}
 						    />
 						))}
 				    </MapView>
