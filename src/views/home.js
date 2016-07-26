@@ -41,13 +41,13 @@ export default class Home extends Component {
 	  };
 	}
 
-	estacionar(tipoVaga) {
+	estacionar(flanelinha) {
 		this.setState({showControls: true});
-		this.setState({tipoVaga: tipoVaga});
+		this.setState({flanelinha: flanelinha});
 	}
 
-	liberarVaga(flanelinha) {
-		this.setState({showControls: true, flanelinha: flanelinha, abaSelecionada: 0, tipoVaga: null});
+	liberarVaga(tipoVaga) {
+		this.setState({showControls: true, tipoVaga: tipoVaga, abaSelecionada: 0, flanelinha: null});
 	}
 
 	carregarNovasVagas(currentPosition) {

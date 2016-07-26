@@ -10,23 +10,20 @@ import {
 var ActionSheet = require('@remobile/react-native-action-sheet');
 
 var BUTTONS = [
-  'Vaga livre',
-  'Faixa azul',
-  'Faixa vermelha',
-  'Pisca alerta ligado',
-  'Idoso/Deficiente',
+  'Área com flanelinha registrado',
+  'Área com flanelinha NÃO registrado',
+  'Área SEM flanelinha',
   'Cancelar'
 ];
 
-var CANCEL_INDEX = 5;
-
+var CANCEL_INDEX = 3;
 
 class ParkoActionSheetIOS extends Component {
 
 	buttonClicked(buttonIndex) {
-		if(buttonIndex == 5) {
+		if(buttonIndex == 3) {
 			this.setState({show:false});
-	       	if(this.props.home.state.tipoVaga != null) { //ja esta estacionado. Deve liberar a vaga
+	       	if(this.props.home.state.flanelinha != null) { //ja esta estacionado. Deve liberar a vaga
 	       		this.props.home.setState({showControls:true});
 	       	}
 	       	else {
@@ -61,11 +58,11 @@ class ParkoActionSheetAndroid extends Component {
 
 	onCancel() {
        this.setState({show:false});
-       if(this.props.home.state.tipoVaga != null) { //ja esta estacionado. Deve liberar a vaga
+       if(this.props.home.state.flanelinha != null) { //ja esta estacionado. Deve liberar a vaga
        		this.props.home.setState({showControls:true});
        }
        else {
-       		this.props.home.setState({showControls:true, procurarVaga: true, abaSelecionada: 0, tipoVaga: null});
+       		this.props.home.setState({showControls:true, procurarVaga: true, abaSelecionada: 0, flanelinha: null});
        }
     }
 
@@ -73,44 +70,29 @@ class ParkoActionSheetAndroid extends Component {
 	    this.setState({show: true});
 	}
 
-	vagaLivre() {
+	flanelinhaRegistrado() {
 		this.setState({show: false});
 		this.props.home.estacionar(0);
 	}
 
-	faixaAzul() {
+	flanelinhaNaoRegistrado() {
 		this.setState({show: false});
 		this.props.home.estacionar(1);
 	}
 
-	faixaVermelha() {
+	semFlanelinha() {
 		this.setState({show: false});
 		this.props.home.estacionar(2);
 	}
-
-	piscaAlerta() {
-		this.setState({show: false});
-		this.props.home.estacionar(3);
-	}
-
-	idoso() {
-		this.setState({show: false});
-		this.props.home.estacionar(4);
-	}
-
-	
-
 
 	render() {
 		return(
 			<ActionSheet
                 visible={this.state.show}
                 onCancel={this.onCancel.bind(this)} >
-                <ActionSheet.Button onPress={this.vagaLivre.bind(this)}>Vaga livre</ActionSheet.Button>
-                <ActionSheet.Button onPress={this.faixaAzul.bind(this)}>Faixa azul</ActionSheet.Button>
-                <ActionSheet.Button onPress={this.faixaVermelha.bind(this)}>Faixa vermelha</ActionSheet.Button>
-                <ActionSheet.Button onPress={this.piscaAlerta.bind(this)}>Pisca alerta ligado</ActionSheet.Button>
-                <ActionSheet.Button onPress={this.idoso.bind(this)}>Idoso/Deficiente</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.flanelinhaRegistrado.bind(this)}>Área com flanelinha registrado</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.flanelinhaNaoRegistrado.bind(this)}>Área com flanelinha NÃO registrado</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.semFlanelinha.bind(this)}>Área SEM flanelinha</ActionSheet.Button>
             </ActionSheet>
 		);
 	}

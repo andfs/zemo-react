@@ -10,19 +10,20 @@ import {
 var ActionSheet = require('@remobile/react-native-action-sheet');
 
 var BUTTONS = [
-  'Área com flanelinha registrado',
-  'Área com flanelinha NÃO registrado',
-  'Área SEM flanelinha',
+  'Vaga livre',
+  'Faixa azul',
+  'Faixa vermelha',
+  'Pisca alerta ligado',
+  'Idoso/Deficiente',
   'Cancelar'
 ];
 
-var CANCEL_INDEX = 3;
-
+var CANCEL_INDEX = 5;
 
 class ParkoActionSheetLiberarIOS extends Component {
 
 	buttonClicked(buttonIndex) {
-		if(buttonIndex == 3) {
+		if(buttonIndex == 5) {
 			this.setState({show:false});
 		}
 		else {
@@ -64,19 +65,29 @@ class ParkoActionSheetLiberarAndroid extends Component {
 	    this.setState({show: true});
 	}
 
-	flanelinhaRegistrado() {
+	vagaLivre() {
 		this.setState({show: false});
 		this.props.home.liberarVaga(0);
 	}
 
-	flanelinhaNaoRegistrado() {
+	faixaAzul() {
 		this.setState({show: false});
 		this.props.home.liberarVaga(1);
 	}
 
-	semFlanelinha() {
+	faixaVermelha() {
 		this.setState({show: false});
 		this.props.home.liberarVaga(2);
+	}
+
+	piscaAlerta() {
+		this.setState({show: false});
+		this.props.home.liberarVaga(3);
+	}
+
+	idoso() {
+		this.setState({show: false});
+		this.props.home.liberarVaga(4);
 	}
 
 	render() {
@@ -84,9 +95,11 @@ class ParkoActionSheetLiberarAndroid extends Component {
 			<ActionSheet
                 visible={this.state.show}
                 onCancel={this.onCancel.bind(this)} >
-                <ActionSheet.Button onPress={this.flanelinhaRegistrado.bind(this)}>Área com flanelinha registrado</ActionSheet.Button>
-                <ActionSheet.Button onPress={this.flanelinhaNaoRegistrado.bind(this)}>Área com flanelinha NÃO registrado</ActionSheet.Button>
-                <ActionSheet.Button onPress={this.semFlanelinha.bind(this)}>Área SEM flanelinha</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.vagaLivre.bind(this)}>Vaga livre</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.faixaAzul.bind(this)}>Faixa azul</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.faixaVermelha.bind(this)}>Faixa vermelha</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.piscaAlerta.bind(this)}>Pisca alerta ligado</ActionSheet.Button>
+                <ActionSheet.Button onPress={this.idoso.bind(this)}>Idoso/Deficiente</ActionSheet.Button>
             </ActionSheet>
 		);
 	}
