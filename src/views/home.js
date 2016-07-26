@@ -134,12 +134,14 @@ export default class Home extends Component {
 		      longitude: region.longitude - region.longitudeDelta / 2,
 		    }
 
+		    let bounds = {southwest: southwest, northeast: northeast};
 		    let context = this;
-		    Meteor.call('buscarVagas', {southwest: southwest, northeast: northeast}, function (error, result) {
+		    Meteor.call('buscarVagas', bounds, function (error, result) {
 		    	if(error) {
 		    		alert("Erro ao buscar vagas/estacionamentos nas proximidades.");
 		    	}
 		    	else {
+
 		    		context.setState({
 		    							markersVagas: result.vagas, 
 		    							markersEstacionamentos: result.estacionamentos, 
@@ -182,7 +184,13 @@ export default class Home extends Component {
 						    <MapView.Marker
 						      key={marker._id}	
 						      coordinate={marker.localidade}
-						      title={marker.tipoVaga}
+						      title={
+						      			marker.tipoVaga == 0 ? 'Vaga livre' :
+						      			marker.tipoVaga == 1 ? 'Faixa azul' :
+						      			marker.tipoVaga == 2 ? 'Faixa vermelha' :
+						      			marker.tipoVaga == 3 ? 'Pisca alerta ligado' :
+						      			'Idoso/Deficiente'
+						  			}
 						      description={
 						      	marker.flanelinha == 0 ? 'Área com flanelinha registrado' :
 						      	marker.flanelinha == 1 ? 'Área com flanelinha NÃO registrado' : ''
