@@ -155,12 +155,21 @@ export default class Home extends Component {
 						      key={marker._id}	
 						      coordinate={marker.localidade}
 						      title={marker.tipoVaga}
+						      description={
+						      	marker.flanelinha == 0 ? 'Área com flanelinha registrado' :
+						      	marker.flanelinha == 1 ? 'Área com flanelinha NÃO registrado' : ''
+						      }
 						      pinColor={
 						      				marker.tipoVaga == 0 ? 'white' : 
 						      				marker.tipoVaga == 1 ? 'blue'  : 
 						      				marker.tipoVaga == 2 ? 'red'   :
 						      				marker.tipoVaga == 3 ? 'yellow':
 						      				'brown'}
+
+			      			  image={
+			      			  	marker.flanelinha == 0 || marker.flanelinha == 1 ? 
+			      			  		require('../../resources/img/flanelinha.png') : ''
+			      			  }
 						    />
 						))}
 
