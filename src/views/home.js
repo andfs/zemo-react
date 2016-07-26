@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   Text,
+  Alert
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -44,12 +45,39 @@ export default class Home extends Component {
 	}
 
 	estacionar(flanelinha) {
-		this.setState({showControls: true});
-		this.setState({flanelinha: flanelinha});
+		this.setState({showControls: true, flanelinha: flanelinha});
+		Meteor.call('estacionar', this.state.carPosition, flanelinha, function (error, result) {
+			if(error) {
+		    	alert("Erro ao registrar ação de estacionar.");
+		    }
+		    else {
+		    	Alert.alert(
+				  'Parabéns!',
+				  result,
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ]
+				);
+		    }
+		});
 	}
 
 	liberarVaga(tipoVaga) {
 		this.setState({showControls: true, tipoVaga: tipoVaga, abaSelecionada: 0, flanelinha: null});
+		Meteor.call('liberarVaga', this.state.carPosition, tipoVaga, function (error, result) {
+			if(error) {
+		    	alert("Erro ao registrar ação de liberar vaga.");
+		    }
+		    else {
+		    	Alert.alert(
+				  'Parabéns!',
+				  result,
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ]
+				);
+		    }
+		});
 	}
 
 	carregarNovasVagas(currentPosition) {
