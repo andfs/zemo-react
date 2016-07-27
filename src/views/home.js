@@ -27,6 +27,7 @@ export default class Home extends Component {
 	  	procurarVaga: true,
 	  	markersVagas: [],
 	  	markersEstacionamentos: [],
+	  	dtUltimoCarregamento: '',
 	  	ultimaPosicaoCarregamento: {
 	  		latitude: -19.907342,
 	      	longitude: -43.975907,	
@@ -80,7 +81,53 @@ export default class Home extends Component {
 		});
 	}
 
+	getBounds(region) {
+		let latitudeDelta = region.latitudeDelta ? region.latitudeDelta : this.state.region.latitudeDelta;
+		let longitudeDelta = region.longitudeDelta ? region.longitudeDelta : this.state.region.longitudeDelta;
+		let northeast = {
+	      latitude: region.latitude + latitudeDelta / 2,
+	      longitude: region.longitude + longitudeDelta / 2,
+	    }
+	    , southwest = {
+	      latitude: region.latitude - latitudeDelta / 2,
+	      longitude: region.longitude - longitudeDelta / 2,
+	    }
+
+	    let bounds = {southwest: southwest, northeast: northeast};
+
+	    return bounds;
+	}
+
+	carregarVagasEstacionamentos(bounds, region) {
+		let context = this;
+		Meteor.call('buscarVagas', bounds, function (error, result) {
+	    	if(error) {
+	    		alert("Erro ao buscar vagas/estacionamentos nas proximidades.");
+	    	}
+	    	else {
+	    		if(region) {
+	    			context.setState({
+						markersVagas: result.vagas, 
+						markersEstacionamentos: result.estacionamentos, 
+						region: region,
+						dtUltimoCarregamento: new Date()
+					});
+	    		}
+	    		else {
+	    			context.setState({
+						markersVagas: result.vagas, 
+						markersEstacionamentos: result.estacionamentos, 
+						dtUltimoCarregamento: new Date()
+					});
+	    		}
+	    	}
+	    });
+	}
+
 	carregarNovasVagas(currentPosition) {
+		if(this.state.ultimaPosicaoCarregamento == '' || this.state.ultimaPosicaoCarregamento == null) {
+			return true;
+		}
 		var R = 6371; // km  
 		var dLat = (currentPosition.latitude - this.state.ultimaPosicaoCarregamento.latitude) * Math.PI / 180;  
 		var dLon = (currentPosition.longitude - this.state.ultimaPosicaoCarregamento.longitude) * Math.PI / 180;   
@@ -98,23 +145,34 @@ export default class Home extends Component {
 		return false;
 	}
 
-	componentDidMount() {
-		navigator.geolocation.getCurrentPosition((initialPosition) => {
-		        this.setState({'region.latitude': initialPosition.latitude, 'region.longitude': initialPosition.longitude});
-		        this.setState({'carPosition.latitude': initialPosition.latitude, 'carPosition.longitude': initialPosition.longitude});
-		        this.setState({'ultimaPosicaoCarregamento.latitude': initialPosition.latitude, 'ultimaPosicaoCarregamento.longitude': initialPosition.longitude});
-			},
-			(error) => alert(JSON.stringify(error)),
-		    {enableHighAccuracy: true, timeout: 20000}
-		);
+	isCarregarNovamente() {
+		if( this.state.dtUltimoCarregamento != "" && 
+			new Date().getTime() - this.state.dtUltimoCarregamento.getTime() > 7000) 
+		{
+			
+			let bounds = this.getBounds(this.state.ultimaPosicaoCarregamento);
+			this.carregarVagasEstacionamentos(bounds);
+		}
+	}
 
+	componentDidMount() {
+
+		navigator.geolocation.getCurrentPosition(
+	      (position) => {
+	        let bounds = this.getBounds(position.coords);
+			this.carregarVagasEstacionamentos(bounds);
+	      },
+	      (error) => alert(error.message),
+	      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+	    );
+
+		setInterval(this.isCarregarNovamente.bind(this), 7000);
+		let context = this;
 		navigator.geolocation.watchPosition((currentPosition) => {
-				if(this.state.procurarVaga) {
-					this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
-					this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
-					this.setState({'ultimaPosicaoCarregamento.latitude': currentPosition.latitude, 'ultimaPosicaoCarregamento.longitude': currentPosition.longitude});
-				}
-				
+			if(this.state.procurarVaga) {
+				this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
+				this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
+			}
 			},
 			(error) => alert(JSON.stringify(error)),
 		    {enableHighAccuracy: true, timeout: 20000}
@@ -125,30 +183,9 @@ export default class Home extends Component {
 
 		let carregarNovasVagas = this.carregarNovasVagas(region); 
 		if(carregarNovasVagas) {
-			let northeast = {
-		      latitude: region.latitude + region.latitudeDelta / 2,
-		      longitude: region.longitude + region.longitudeDelta / 2,
-		    }
-		    , southwest = {
-		      latitude: region.latitude - region.latitudeDelta / 2,
-		      longitude: region.longitude - region.longitudeDelta / 2,
-		    }
-
-		    let bounds = {southwest: southwest, northeast: northeast};
-		    let context = this;
-		    Meteor.call('buscarVagas', bounds, function (error, result) {
-		    	if(error) {
-		    		alert("Erro ao buscar vagas/estacionamentos nas proximidades.");
-		    	}
-		    	else {
-
-		    		context.setState({
-		    							markersVagas: result.vagas, 
-		    							markersEstacionamentos: result.estacionamentos, 
-		    							region: region
-		    						});
-		    	}
-		    });
+		    let bounds = this.getBounds(region);
+		    this.setState({'ultimaPosicaoCarregamento.latitude': region.latitude, 'ultimaPosicaoCarregamento.longitude': region.longitude});
+		    this.carregarVagasEstacionamentos(bounds);
 		}
 	}
 
