@@ -49,12 +49,18 @@ export default class Home extends Component {
 		this.setState({showControls: true, flanelinha: flanelinha});
 		Meteor.call('estacionar', this.state.carPosition, flanelinha, function (error, result) {
 			if(error) {
-		    	alert("Erro ao registrar ação de estacionar.");
+		    	Alert.alert(
+				  "Ooops...",
+				  "Erro ao registrar a ação de estacionar.",
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ]
+				);
 		    }
 		    else {
 		    	Alert.alert(
-				  'Parabéns!',
-				  result,
+				  result.titulo,
+				  result.texto,
 				  [
 				    {text: 'OK', onPress: () => console.log('OK Pressed')},
 				  ]
@@ -67,12 +73,18 @@ export default class Home extends Component {
 		this.setState({showControls: true, tipoVaga: tipoVaga, abaSelecionada: 0, flanelinha: null});
 		Meteor.call('liberarVaga', this.state.carPosition, tipoVaga, function (error, result) {
 			if(error) {
-		    	alert("Erro ao registrar ação de liberar vaga.");
+		    	Alert.alert(
+				  "Ooops...",
+				  "Erro ao registrar a ação de liberar vaga.",
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ]
+				);
 		    }
 		    else {
 		    	Alert.alert(
-				  'Parabéns!',
-				  result,
+				  result.titulo,
+				  result.texto,
 				  [
 				    {text: 'OK', onPress: () => console.log('OK Pressed')},
 				  ]
