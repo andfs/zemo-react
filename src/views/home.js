@@ -5,7 +5,8 @@ import {
   View,
   StyleSheet,
   Text,
-  Alert
+  Alert,
+  AppState
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -20,7 +21,9 @@ export default class Home extends Component {
 	  super(props);
 	
 	  this.state = {
+	  	watchID: null,
 	  	tipoVaga: null,
+	  	ativo: true,
 	  	flanelinha: null,
 	  	showControls: true,
 	  	abaSelecionada: 0,
@@ -29,8 +32,8 @@ export default class Home extends Component {
 	  	markersEstacionamentos: [],
 	  	dtUltimoCarregamento: '',
 	  	ultimaPosicaoCarregamento: {
-	  		latitude: -19.907342,
-	      	longitude: -43.975907,	
+	  		latitude: null,
+	      	longitude: null,	
 	  	},
 	  	carPosition: {
 	  		latitude: -19.907342,
@@ -114,7 +117,13 @@ export default class Home extends Component {
 		let context = this;
 		Meteor.call('buscarVagas', bounds, function (error, result) {
 	    	if(error) {
-	    		alert("Erro ao buscar vagas/estacionamentos nas proximidades.");
+	    		Alert.alert(
+				  "Ooops...",
+				  "Erro ao buscar vagas/estacionamentos nas proximidades.",
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ]
+				);
 	    	}
 	    	else {
 	    		if(region) {
@@ -122,6 +131,7 @@ export default class Home extends Component {
 						markersVagas: result.vagas, 
 						markersEstacionamentos: result.estacionamentos, 
 						region: region,
+						ultimaPosicaoCarregamento: region, 
 						dtUltimoCarregamento: new Date()
 					});
 	    		}
@@ -137,67 +147,91 @@ export default class Home extends Component {
 	}
 
 	carregarNovasVagas(currentPosition) {
-		if(this.state.ultimaPosicaoCarregamento == '' || this.state.ultimaPosicaoCarregamento == null) {
-			return true;
-		}
-		var R = 6371; // km  
-		var dLat = (currentPosition.latitude - this.state.ultimaPosicaoCarregamento.latitude) * Math.PI / 180;  
-		var dLon = (currentPosition.longitude - this.state.ultimaPosicaoCarregamento.longitude) * Math.PI / 180;   
-		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +  
-		        Math.cos(this.state.ultimaPosicaoCarregamento.latitude *Math.PI / 180) * 
-		        Math.cos(currentPosition.latitude * Math.PI / 180) *   
-		        Math.sin(dLon / 2) * Math.sin(dLon / 2);   
-		var c = 2 * Math.asin(Math.sqrt(a));   
-		var d = R * c;
-		d = d * 1000;	//metros
+		if(this.state.ativo) {
+			if(this.state.ultimaPosicaoCarregamento == '' || this.state.ultimaPosicaoCarregamento == null) {
+				return true;
+			}
+			var R = 6371; // km  
+			var dLat = (currentPosition.latitude - this.state.ultimaPosicaoCarregamento.latitude) * Math.PI / 180;  
+			var dLon = (currentPosition.longitude - this.state.ultimaPosicaoCarregamento.longitude) * Math.PI / 180;   
+			var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +  
+			        Math.cos(this.state.ultimaPosicaoCarregamento.latitude *Math.PI / 180) * 
+			        Math.cos(currentPosition.latitude * Math.PI / 180) *   
+			        Math.sin(dLon / 2) * Math.sin(dLon / 2);   
+			var c = 2 * Math.asin(Math.sqrt(a));   
+			var d = R * c;
+			d = d * 1000;	//metros
 
-		if(d >= 50) {
-			return true
+			if(d >= 50) {
+				return true
+			}
+			return false;
 		}
 		return false;
 	}
 
 	isCarregarNovamente() {
-		if( this.state.dtUltimoCarregamento != "" && 
+		if(this.state.ativo && this.state.dtUltimoCarregamento != "" && 
 			new Date().getTime() - this.state.dtUltimoCarregamento.getTime() > 7000) 
 		{
-			
+			console.log('carregando denovo');
 			let bounds = this.getBounds(this.state.ultimaPosicaoCarregamento);
 			this.carregarVagasEstacionamentos(bounds);
 		}
 	}
 
-	componentDidMount() {
+	handleAppStateChange(appState) {
+		if(appState === 'background' || appState === 'inactive') {
+			this.setState({ativo: false});
+			console.log('background ou inativo');
+		}
+		else {
+			this.setState({ativo: true});
+			this.startWatch();
+		}
+	}
 
-		navigator.geolocation.getCurrentPosition(
-	      (position) => {
-	        let bounds = this.getBounds(position.coords);
-			this.carregarVagasEstacionamentos(bounds);
-	      },
-	      (error) => alert(error.message),
-	      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-	    );
-
-		setInterval(this.isCarregarNovamente.bind(this), 7000);
+	startWatch() {
 		let context = this;
-		navigator.geolocation.watchPosition((currentPosition) => {
+		let watchID = navigator.geolocation.watchPosition((currentPosition) => {
+			console.log('posicao mudou');
 			if(this.state.procurarVaga) {
 				this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
 				this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
 			}
 			},
-			(error) => alert(JSON.stringify(error)),
+			(error) => alert("erro no metodo watchPosition linha 202" + JSON.stringify(error)),
 		    {enableHighAccuracy: true, timeout: 20000}
 		);
+
+		this.setState({watchID: watchID});
+	}
+
+	componentWillUnmount() {
+    	AppState.removeEventListener('change', this.handleAppStateChange);
+    	navigator.geolocation.clearWatch(this.state.watchID);
+  	}
+
+	componentDidMount() {
+		AppState.addEventListener('change', this.handleAppStateChange.bind(this));
+		navigator.geolocation.getCurrentPosition(
+	      (position) => {
+	        let bounds = this.getBounds(position.coords);
+			this.carregarVagasEstacionamentos(bounds);
+	      },
+	      (error) => alert("Erro no metodo getCurrentPosition linha 177"),
+	      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+	    );
+
+		setInterval(this.isCarregarNovamente.bind(this), 7000);
+		this.startWatch();
 	}
 
 	onRegionChangeComplete(region) {
-
 		let carregarNovasVagas = this.carregarNovasVagas(region); 
 		if(carregarNovasVagas) {
 		    let bounds = this.getBounds(region);
-		    this.setState({'ultimaPosicaoCarregamento.latitude': region.latitude, 'ultimaPosicaoCarregamento.longitude': region.longitude});
-		    this.carregarVagasEstacionamentos(bounds);
+		    this.carregarVagasEstacionamentos(bounds, region);
 		}
 	}
 
