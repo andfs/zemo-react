@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   Alert,
+  AsyncStorage,
   AppState
 } from 'react-native';
 
@@ -50,6 +51,12 @@ export default class Home extends Component {
 
 	estacionar(flanelinha) {
 		this.setState({showControls: true, flanelinha: flanelinha});
+		AsyncStorage.setItem('parkoLocalEstacionamento', JSON.stringify(this.state.carPosition), function(error) {
+			if(error) {
+				console.log('erro');
+			}
+		});
+
 		Meteor.call('estacionar', this.state.carPosition, flanelinha, function (error, result) {
 			if(error) {
 		    	Alert.alert(
@@ -213,17 +220,29 @@ export default class Home extends Component {
   	}
 
 	componentDidMount() {
+		let context = this;
+		AsyncStorage.getItem('parkoLocalEstacionamento', function(error, result) {
+			if(!error && result) {
+				let localEstacionamento = JSON.parse(result);
+				let bounds = context.getBounds(localEstacionamento);
+				context.setState({abaSelecionada: 1});
+				context.carregarVagasEstacionamentos(bounds);
+			}
+			else {
+				navigator.geolocation.getCurrentPosition(
+			      (position) => {
+			        let bounds =  context.getBounds(position.coords);
+					context.carregarVagasEstacionamentos(bounds);
+			      },
+			      (error) => alert("Erro no metodo getCurrentPosition linha 177"),
+			      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+			    );
+			}
+			
+		});
 		AppState.addEventListener('change', this.handleAppStateChange.bind(this));
-		navigator.geolocation.getCurrentPosition(
-	      (position) => {
-	        let bounds = this.getBounds(position.coords);
-			this.carregarVagasEstacionamentos(bounds);
-	      },
-	      (error) => alert("Erro no metodo getCurrentPosition linha 177"),
-	      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-	    );
 
-		setInterval(this.isCarregarNovamente.bind(this), 7000);
+		setInterval(this.isCarregarNovamente.bind(this), 10000);
 		this.startWatch();
 	}
 
