@@ -10,6 +10,8 @@ import {
 import DrawerView from './views/drawerView';
 import Home from './views/home';
 import MenuView from './views/menuView';
+import MinhasPlacas from './views/minhasPlacas';
+import NovaPlaca from './views/novaPlaca';
 
 class ParkoNavigatorIOS extends Component {
 
@@ -57,6 +59,20 @@ class ParkoNavigatorAndroid extends Component {
 	      	return (
 	          <DrawerView navigator={navigator} route={route}>
 	            <Home navigator={navigator} route={route}/>
+	          </DrawerView>
+	        );
+
+	      case 'minhasPlacas' :
+	      	return (
+	          <DrawerView navigator={navigator} route={route}>
+	            <MinhasPlacas navigator={navigator} route={route}/>
+	          </DrawerView>
+	        );
+
+	      case 'novaPlaca':
+	      	return (
+	          <DrawerView navigator={navigator} route={route}>
+	            <NovaPlaca navigator={navigator} route={route}/>
 	          </DrawerView>
 	        );
 

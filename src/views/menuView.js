@@ -19,6 +19,8 @@ const {
   LoginManager,
 } = FBSDK;
 
+import MinhasPlacas from './minhasPlacas';
+
 export default class MenuView extends Component {
 
 	logout() {
@@ -51,6 +53,18 @@ export default class MenuView extends Component {
 		});
 	}
 
+	minhasPlacas() {
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: MinhasPlacas,
+	          title: 'Minhas Placas',
+	        });
+		}
+		else {
+			this.props.navigator.push({ name: 'minhasPlacas'});
+		}
+	}
+
 	render() {
 		return(
 			<View style={estiloMenu.drawer}>
@@ -72,6 +86,10 @@ export default class MenuView extends Component {
 
 				<TouchableOpacity>
 					<Text>Meus Vouchers</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity onPress={this.minhasPlacas.bind(this)}>
+					<Text>Minhas Placas</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={this.logout.bind(this)}>

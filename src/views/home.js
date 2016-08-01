@@ -30,6 +30,7 @@ export default class Home extends Component {
 	  	abaSelecionada: 0,
 	  	procurarVaga: true,
 	  	markersVagas: [],
+	  	markersFlanelinhas: [],
 	  	markersEstacionamentos: [],
 	  	dtUltimoCarregamento: '',
 	  	ultimaPosicaoCarregamento: {
@@ -81,6 +82,7 @@ export default class Home extends Component {
 
 	liberarVaga(tipoVaga) {
 		this.setState({showControls: true, tipoVaga: tipoVaga, abaSelecionada: 0, flanelinha: null});
+		AsyncStorage.removeItem('parkoLocalEstacionamento');
 		Meteor.call('liberarVaga', this.state.carPosition, tipoVaga, function (error, result) {
 			if(error) {
 		    	Alert.alert(
@@ -136,6 +138,7 @@ export default class Home extends Component {
 	    		if(region) {
 	    			context.setState({
 						markersVagas: result.vagas, 
+						markersFlanelinhas: result.flanelinhas,
 						markersEstacionamentos: result.estacionamentos, 
 						region: region,
 						ultimaPosicaoCarregamento: region, 
@@ -144,7 +147,8 @@ export default class Home extends Component {
 	    		}
 	    		else {
 	    			context.setState({
-						markersVagas: result.vagas, 
+						markersVagas: result.vagas,
+						markersFlanelinhas: result.flanelinhas,
 						markersEstacionamentos: result.estacionamentos, 
 						dtUltimoCarregamento: new Date()
 					});
@@ -208,7 +212,7 @@ export default class Home extends Component {
 			}
 			},
 			(error) => alert("erro no metodo watchPosition linha 202" + JSON.stringify(error)),
-		    {enableHighAccuracy: true, timeout: 20000}
+		    {enableHighAccuracy: true, timeout: 2000}
 		);
 
 		this.setState({watchID: watchID});
@@ -235,14 +239,14 @@ export default class Home extends Component {
 					context.carregarVagasEstacionamentos(bounds);
 			      },
 			      (error) => alert("Erro no metodo getCurrentPosition linha 177"),
-			      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+			      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000}
 			    );
 			}
 			
 		});
 		AppState.addEventListener('change', this.handleAppStateChange.bind(this));
 
-		setInterval(this.isCarregarNovamente.bind(this), 10000);
+		// setInterval(this.isCarregarNovamente.bind(this), 10000);
 		this.startWatch();
 	}
 
@@ -303,11 +307,18 @@ export default class Home extends Component {
 						      				marker.tipoVaga == 2 ? 'red'   :
 						      				marker.tipoVaga == 3 ? 'yellow':
 						      				'brown'}
+						    />
+						))}
 
-			      			  image={
-			      			  	marker.flanelinha == 0 || marker.flanelinha == 1 ? 
-			      			  		require('../../resources/img/flanelinha.png') : ''
-			      			  }
+						{this.state.markersFlanelinhas.map(marker => (
+						    <MapView.Marker
+						      key={marker._id}	
+						      coordinate={marker.localidade}
+						      title={
+						      			marker.flanelinha == 0 ? 'Área com flanelinha registrado' :
+						      			marker.flanelinha == 1 ? 'Área com flanelinha NÃO registrado' : ''
+						  			}
+						      image={require('../../resources/img/flanelinha.png')}
 						    />
 						))}
 
