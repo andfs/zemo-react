@@ -75,7 +75,7 @@ export default class MinhasPlacas extends Component {
 		}
 		else {
 			return (
-				<TouchableOpacity style={styles.button}  onPress={this.novaPlaca.bind(this)}>
+				<TouchableOpacity style={styles.button} onPress={this.novaPlaca.bind(this)}>
 		        	<Text>Adicionar placa</Text>
 		        </TouchableOpacity>
 			);

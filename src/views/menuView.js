@@ -20,6 +20,7 @@ const {
 } = FBSDK;
 
 import MinhasPlacas from './minhasPlacas';
+import ReservarVagas from './reservarVaga';
 
 export default class MenuView extends Component {
 
@@ -65,6 +66,18 @@ export default class MenuView extends Component {
 		}
 	}
 
+	reservarVagas() {
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: ReservarVagas,
+	          title: 'Reservar Vaga',
+	        });
+		}
+		else {
+			this.props.navigator.push({ name: 'reservarVagas'});
+		}
+	}
+
 	render() {
 		return(
 			<View style={estiloMenu.drawer}>
@@ -72,7 +85,7 @@ export default class MenuView extends Component {
 					<Text>Home</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity>
+				<TouchableOpacity onPress={this.reservarVagas.bind(this)}>
 					<Text>Reservar Vaga</Text>
 				</TouchableOpacity>
 
