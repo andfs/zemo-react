@@ -21,7 +21,7 @@ export default class MinhasPlacas extends Component {
 					<View style={styles.carContainer}>
 						<View style={styles.infoContainer}>
 							<Text style={styles.placa}>{item.placa}</Text>
-							<Text style={styles.infoCarro}>{item.nomeCarro} | {item.categoria} | {item.cor}</Text>
+							<Text style={styles.infoCarro}>{item.carro} | {item.categoria === 'C' ? 'carro' : item.categoria === 'M' ? 'moto' : 'carro grande'} | {item.cor}</Text>
 						</View>
 						<View style={styles.infoContainerRight}>
 							<View style={{flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}}>
@@ -63,11 +63,11 @@ export default class MinhasPlacas extends Component {
 			return(
 				<View style={{flex: 1}}>
 					<MeteorComplexListView
-					  elements={this.getElements}
+					  elements={this.getElements.bind(this)}
 			          renderRow={this.renderRow.bind(this)}
 			        />
 
-			        <TouchableOpacity onPress={this.novaPlaca.bind(this)}>
+			        <TouchableOpacity onPress={this.novaPlaca.bind(this)} style={styles.button}>
 			        	<Text>Adicionar placa</Text>
 			        </TouchableOpacity>
 				</View>
@@ -86,6 +86,7 @@ export default class MinhasPlacas extends Component {
 
 
 export default createContainer(params=>{
+  Meteor.subscribe('usuariosPlacas');
   return {
     placas: Meteor.user().placas,
   };
