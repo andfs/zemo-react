@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Picker
+  Picker,
+  Alert
 } from 'react-native';
 
 import Meteor, { createContainer } from 'react-native-meteor';
@@ -20,7 +21,7 @@ export default class NovaReserva extends Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {
-	    	placa: '-',
+	    	placa: '',
 	    	dtChegadaPrevista: '',
 	    	data: Moment().add(2, 'hour').toDate(),
 	    	tipoPermanencia: '',
@@ -30,8 +31,20 @@ export default class NovaReserva extends Component {
 	    };
 	}
 
-	cadastrar() {
-		convertePlaca(this.state.placa)
+	reservar() {
+		let placa = convertePlaca(this.state.placa)
+		if(placa === "erro") {
+			Alert.alert(
+			  "Ooops...",
+			  "Formato inválido da placa. Deve ser informado no seguinte formato: XXX-9999",
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ]
+			);
+		}
+		else {
+			alert(placa);	
+		}
 	}
 
 	voltar() {
@@ -46,7 +59,6 @@ export default class NovaReserva extends Component {
 		}
 		else if(ready) {
 			if(placas && placas.length == 1) {
-				this.setState({placa: placa.placa});
 				return(
 					<View style={styles.container}>
 						<View style={styles.linha}>
@@ -80,7 +92,7 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<TouchableOpacity style={styles.button} onPress={this.cadastrar.bind(this)}>
+							<TouchableOpacity style={styles.button} onPress={this.reservar.bind(this)}>
 								<Text>Cadastrar</Text>
 							</TouchableOpacity>
 							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
@@ -130,7 +142,7 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<TouchableOpacity style={styles.button} onPress={this.cadastrar.bind(this)}>
+							<TouchableOpacity style={styles.button} onPress={this.reservar.bind(this)}>
 								<Text>Cadastrar</Text>
 							</TouchableOpacity>
 							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
@@ -177,8 +189,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<TouchableOpacity style={styles.button} onPress={this.cadastrar.bind(this)}>
-								<Text>Cadastrar</Text>
+							<TouchableOpacity style={styles.button} onPress={this.reservar.bind(this)}>
+								<Text>Reservar</Text>
 							</TouchableOpacity>
 							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
 								<Text>Voltar</Text>
