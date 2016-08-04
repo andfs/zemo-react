@@ -4,11 +4,13 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  ListView
+  ListView,
+  Platform
 } from 'react-native';
 
 import Meteor, { createContainer, MeteorComplexListView } from 'react-native-meteor';
 import Loading from '../comp/loading';
+import NovaReserva from './novaReserva'
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
 
 export default class ReservarVagas extends Component {
@@ -32,6 +34,26 @@ export default class ReservarVagas extends Component {
 		});
 	}
 
+	novaReserva(item) {
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: NovaReserva,
+	          title: 'Nova Reserva',
+	          passProps: {
+					      estacionamento: item
+					    }
+	        });
+		}
+		else {
+			this.props.navigator.push({ 
+										name: 'novaReserva',
+										passProps: {
+									      estacionamento: item
+									    }
+									});
+		}
+	}
+
 	renderRow(item) {
 		return (
 			<View style={styles.container}>
@@ -44,7 +66,7 @@ export default class ReservarVagas extends Component {
 					</View>
 					<View style={styles.infoContainerRight}>
 						<View style={{flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}}>
-							<TouchableOpacity>
+							<TouchableOpacity onPress={()=> this.novaReserva(item)}>
 								<Text style={styles.placa}>reservar</Text>
 							</TouchableOpacity>
 						</View>
