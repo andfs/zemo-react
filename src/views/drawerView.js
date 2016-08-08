@@ -8,12 +8,15 @@ import {
   TouchableHighLight,
   Navigator,
   ToolbarAndroid,
+  Dimensions,
   DrawerLayoutAndroid,
 } from 'react-native';
 
 import MenuView from './menuView';
 import Loading from '../comp/loading';
 import ParkoNavigatorInicial from '../navigatorInicial';
+
+const {height, width} = Dimensions.get('window');
 
 export default class DrawerView extends Component {
 
@@ -60,7 +63,7 @@ export default class DrawerView extends Component {
         <DrawerLayoutAndroid
           ref={'drawer'}
           drawerWidth={200}
-          style={{height: 500}}
+          style={{height: height - 70}}
           drawerPosition={DrawerLayoutAndroid.positions.Left}
           renderNavigationView={() => <MenuView navigator={this.props.navigator} drawer={this.refs.drawer} pai={this} />} >
             {this.props.children}

@@ -22,7 +22,7 @@ export default class NovaReserva extends Component {
 	    super(props);
 	    this.state = {
 	    	placa: '',
-	    	dtChegadaPrevista: '',
+	    	dtChegadaPrevista: Moment().add(2, 'hour').toDate(),
 	    	data: Moment().add(2, 'hour').toDate(),
 	    	tipoPermanencia: '',
 	    	estacionamentoId: '',
@@ -32,7 +32,7 @@ export default class NovaReserva extends Component {
 	}
 
 	reservar() {
-		let placa = convertePlaca(this.state.placa)
+		let placa = convertePlaca(this.state.placa);
 		if(placa === "erro") {
 			Alert.alert(
 			  "Ooops...",
@@ -43,14 +43,40 @@ export default class NovaReserva extends Component {
 			);
 		}
 		else {
-			alert(placa);	
+			Meteor.collection('reservas').insert({
+												  placa: placa, 
+												  dtReserva: new Date(), 
+												  dtChegadaPrevista: this.state.dtChegadaPrevista,
+												  tipoPermanencia: this.state.tipoPermanencia,
+												  estacionamentoId: this.props.estacionamento._id,
+												  userId: Meteor.userId() }, function(error) {
+
+
+				if(error) {
+					Alert.alert(
+					  "Ooops...",
+					  error.message,
+					  [
+					    {text: 'OK', onPress: () => console.log('OK Pressed')},
+					  ]
+					);
+				}
+				else {
+					Alert.alert(
+					  "Sucesso",
+					  "Sua reserva está confirmada. Você tem até 15 minutos de tolerância para manter sua reserva.",
+					  [
+					    {text: 'OK', onPress: () => this.navigator.pop()},
+					  ]
+					);
+				}
+			});
 		}
 	}
 
 	voltar() {
 		this.props.navigator.pop();
 	}
-
 
 	render() {
 		const { placas, ready } = this.props;
@@ -208,7 +234,7 @@ export default class NovaReserva extends Component {
 
 export default createContainer(params=>{
   const handle = Meteor.subscribe('usuariosPlacas');
- 
+
   return {
     ready: handle.ready(),
     placas: Meteor.user().placas

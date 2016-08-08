@@ -5,14 +5,14 @@ const convertePlaca = function(placa) {
 		return 'erro';
 	}
 	else {
-		if(placa.contains('-')) {
-			return placa.toUpperCase();
-		}
-		else {
+		if(placa.search('-') === -1) {
 			let letras  = placa.substring(0, 3);
 			let numeros = placa.substring(3);
 			let placaOK = letras + "-" + numeros;
 			return placaOK.toUpperCase(); 
+		}
+		else {
+			return placa.toUpperCase();			
 		}
 	}
 }
