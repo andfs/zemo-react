@@ -22,6 +22,7 @@ const {
 import MinhasPlacas from './minhasPlacas';
 import ReservarVagas from './reservarVaga';
 import MeusPontos from './meusPontos';
+import CartoesCredito from './cartoesCredito';
 
 export default class MenuView extends Component {
 
@@ -91,11 +92,27 @@ export default class MenuView extends Component {
 		}
 	}
 
+	pagamento() {
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: CartoesCredito,
+	          title: 'Pagamento',
+	        });
+		}
+		else {
+			this.props.navigator.push({ name: 'cartoesCredito'});
+		}
+	}
+
 	render() {
 		return(
 			<View style={estiloMenu.drawer}>
 				<TouchableOpacity>
 					<Text>Home</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity onPress={this.pagamento.bind(this)}>
+					<Text>Pagamento</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={this.reservarVagas.bind(this)}>

@@ -15,10 +15,13 @@ import com.facebook.FacebookSdk;
 import com.airbnb.android.react.maps.MapsPackage;
 import java.util.Arrays;
 import java.util.List;
+import com.zfedoran.react.modules.cardscan.*;
 
 public class MainApplication extends Application implements ReactApplication {
 
   private static CallbackManager mCallbackManager = new CallbackManager.Factory().create();
+  private static CardScanPackage mCardScanPackage = new CardScanPackage();
+
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     
     @Override
@@ -32,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
             new MainReactPackage(),
             new MapsPackage(),
             new FBSDKPackage(mCallbackManager),
+            mCardScanPackage
         };
         return Arrays.<ReactPackage>asList(packages);
     }
@@ -49,5 +53,9 @@ public class MainApplication extends Application implements ReactApplication {
 
   public static CallbackManager getCallbackManager() {
     return mCallbackManager;
+  }
+
+  public static CardScanPackage getCardScanPackage() {
+    return mCardScanPackage;
   }
 }

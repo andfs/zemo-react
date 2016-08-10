@@ -39,6 +39,9 @@
 - [ ] Arrumar layout da listagem dos estacionamentos. Esta com uma distancia muito grande do campo de busca
 - [ ] implementar metodo cobrarReservaCancelar() que cobra no cartao de credito o valor referente da data de inicio da reserva ate a data do cancelamento. Essa reserva nao pode ser deletaca, e sim marcada como cancelada e paga
 
+### cartoesCredito.js
+- [ ] Adicionar modulo para card.io no ios
+
 ### GERAL
 - [ ] BackButtonAndroid. Implementar
 - [ ] implementar metodo cobrarReservaCancelar() que cobra no cartao de credito o valor referente da data de inicio da reserva ate a data do cancelamento
