@@ -43,6 +43,7 @@ export default class NovaReserva extends Component {
 			);
 		}
 		else {
+			let context = this;
 			Meteor.collection('reservas').insert({
 												  placa: placa, 
 												  dtReserva: new Date(), 
@@ -66,7 +67,7 @@ export default class NovaReserva extends Component {
 					  "Sucesso",
 					  "Sua reserva está confirmada. Você tem até 15 minutos de tolerância para manter sua reserva.",
 					  [
-					    {text: 'OK', onPress: () => this.navigator.pop()},
+					    {text: 'OK', onPress: () => context.props.navigator.pop()},
 					  ]
 					);
 				}

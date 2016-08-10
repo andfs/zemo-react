@@ -12,8 +12,9 @@ import Home from './views/home';
 import MenuView from './views/menuView';
 import MinhasPlacas from './views/minhasPlacas';
 import NovaPlaca from './views/novaPlaca';
-import ReservarVagas from './views/reservarVaga'
-import NovaReserva from './views/novaReserva'
+import ReservarVagas from './views/reservarVaga';
+import NovaReserva from './views/novaReserva';
+import MeusPontos from './views/meusPontos';
 
 class ParkoNavigatorIOS extends Component {
 
@@ -89,6 +90,13 @@ class ParkoNavigatorAndroid extends Component {
 		      	return (
 		          <DrawerView navigator={navigator} route={route}>
 		            <NovaReserva navigator={navigator} route={route} {...route.passProps}/>
+		          </DrawerView>
+		        );
+
+		    case 'meusPontos':
+		      	return (
+		          <DrawerView navigator={navigator} route={route}>
+		            <MeusPontos navigator={navigator} route={route}/>
 		          </DrawerView>
 		        );
 

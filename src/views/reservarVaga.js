@@ -43,15 +43,33 @@ export default class ReservarVagas extends Component {
 		});
 	}
 
+	cobrarReservaCancelar(reserva) {
+
+	}
+
 	cancelarReserva(reserva) {
-		Alert.alert(
+		let dtChegadaPrevista = Moment(reserva.dtChegadaPrevista);
+		let diff              = dtChegadaPrevista.diff(new Date(), 'minutes');
+		if(diff <= 30) {
+			Alert.alert(
+			  "Atenção",
+			  "Faltam menos de 30 min para a sua chegada prevista. Por tanto será cobrado o valor referente a reserva, do momento de efetivação da reserva até o momento atual.",
+			  [
+			    {text: 'Ok', onPress: () => this.cobrarReservaCancelar(reserva)},
+			    {text: 'Cancelar'}
+			  ]
+			);			
+		}
+		else {
+			Alert.alert(
 			  "Atenção",
 			  "Deseja realmente cancelar essa reserva?",
 			  [
-			    {text: 'Sim', onPress: () => console.log('OK Pressed')},
-			    {text: 'Não', onPress: () => console.log('OK Pressed')}
+			    {text: 'Sim', onPress: () => Meteor.collection('reservas').remove(reserva.idReserva)},
+			    {text: 'Não'}
 			  ]
 			);
+		}
 	}
 
 	novaReserva(item) {
@@ -179,6 +197,7 @@ export default class ReservarVagas extends Component {
 		for (var i = 0; i < reservas.length; i++) {
 			let reserva = reservas[i];
 			let reservaResult = {
+				idReserva: reserva._id,
 				dtEfetuada: reserva.dtEfetuada,
 				dtChegadaPrevista: reserva.dtChegadaPrevista,
 				placa: reserva.placa,

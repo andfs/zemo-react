@@ -21,6 +21,7 @@ const {
 
 import MinhasPlacas from './minhasPlacas';
 import ReservarVagas from './reservarVaga';
+import MeusPontos from './meusPontos';
 
 export default class MenuView extends Component {
 
@@ -66,6 +67,18 @@ export default class MenuView extends Component {
 		}
 	}
 
+	meusPontos() {
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: MeusPontos,
+	          title: 'Meus Pontos',
+	        });
+		}
+		else {
+			this.props.navigator.push({ name: 'meusPontos'});
+		}	
+	}
+
 	reservarVagas() {
 		if(Platform.OS === 'ios') {
 			this.props.navigator.push({
@@ -93,7 +106,7 @@ export default class MenuView extends Component {
 					<Text>Estacionar/Pagar</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity>
+				<TouchableOpacity onPress={this.meusPontos.bind(this)}>
 					<Text>Meus Pontos</Text>
 				</TouchableOpacity>
 
