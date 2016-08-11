@@ -211,7 +211,7 @@ export default class Home extends Component {
 				this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
 			}
 			},
-			(error) => alert("erro no metodo watchPosition linha 202" + JSON.stringify(error)),
+			(error) => console.log(error),
 		    {enableHighAccuracy: true, timeout: 2000}
 		);
 
@@ -238,7 +238,7 @@ export default class Home extends Component {
 			        let bounds =  context.getBounds(position.coords);
 					context.carregarVagasEstacionamentos(bounds);
 			      },
-			      (error) => alert("Erro no metodo getCurrentPosition linha 177"),
+			      (error) => console.log(error),
 			      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000}
 			    );
 			}
