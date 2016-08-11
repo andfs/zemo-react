@@ -21,6 +21,7 @@ export default class CartoesCredito extends Component {
 	async getCartaoKey() {
 		try 
 		{
+			this.setState({loading: true});
 		  	const value = await AsyncStorage.getItem('@parko!id@Card');
 		  	if(value !== null) {
 		  		this.setState({cartaoSalvo: value});
@@ -35,16 +36,18 @@ export default class CartoesCredito extends Component {
 			       	this.setState({
 			    			cardType: responseJson.brand,
 						  	redactedCardNumber: '**** **** **** '+ responseJson.last_digits,
-						  	cardholderName: responseJson.holder_name
+						  	cardholderName: responseJson.holder_name,
+						  	loading: false
 			    		});
 			      })
 			      .catch((error) => {
-			        console.error(error);
+			        this.setState({loading: false});
 			      });
 		  	}
 		}
 		catch (error) 
 		{
+			this.setState({loading: false});
 		  	return null;
 		}
 	}
@@ -57,6 +60,7 @@ export default class CartoesCredito extends Component {
 	  super(props);
 	  
 	  this.state = {
+	  	loading: false,
 	  	cartaoOk: false,
 	  	cartaoSalvo: null,
 	  	cardType: '',
@@ -66,6 +70,11 @@ export default class CartoesCredito extends Component {
 	  	isExpiryValid: false,
 	  	redactedCardNumber: ''
 	  };
+	}
+
+	cancelar() {
+		this.getCartaoKey().done();
+		this.setState({cartaoOk: false});
 	}
 
 	onPress() {
@@ -173,6 +182,12 @@ export default class CartoesCredito extends Component {
 								<Text>Confirmo as informações acima</Text>
 							</TouchableHighlight>
 						</View>
+
+						<View style={styles.info}>
+							<TouchableHighlight style={styles.button} onPress={this.cancelar.bind(this)}>
+								<Text>Cancelar</Text>
+							</TouchableHighlight>
+						</View>
 					</View>
 				</View>
 			);
@@ -199,8 +214,19 @@ export default class CartoesCredito extends Component {
 							</View>
 
 							<View style={styles.info}>
+								<Text style={styles.titulo}>Validade:</Text>
+								<Text>{this.state.expiryMonth}/{this.state.expiryYear}</Text>
+							</View>
+
+							<View style={styles.info}>
 								<TouchableHighlight style={styles.button} onPress={this.confirmacao.bind(this)}>
 									<Text>Confirmo as informações acima</Text>
+								</TouchableHighlight>
+							</View>
+
+							<View style={styles.info}>
+								<TouchableHighlight style={styles.button} onPress={this.cancelar.bind(this)}>
+									<Text>Cancelar</Text>
 								</TouchableHighlight>
 							</View>
 						</View>
@@ -233,7 +259,10 @@ export default class CartoesCredito extends Component {
 	}
 
 	render() {
-		if(this.state.cartaoSalvo) {
+		if(this.state.loading) {
+			return (<Loading/>);
+		}
+		else if(this.state.cartaoSalvo) {
 			return this.renderCartaoExistente(this.state.cartaoSalvo);
 		}	
 		else {
