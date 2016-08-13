@@ -239,7 +239,7 @@ export default class Home extends Component {
 					context.carregarVagasEstacionamentos(bounds);
 			      },
 			      (error) => console.log(error),
-			      {enableHighAccuracy: true, timeout: 2000, maximumAge: 1000}
+			      {enableHighAccuracy: true, timeout: 2000}
 			    );
 			}
 			

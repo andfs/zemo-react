@@ -23,6 +23,7 @@ import MinhasPlacas from './minhasPlacas';
 import ReservarVagas from './reservarVaga';
 import MeusPontos from './meusPontos';
 import CartoesCredito from './cartoesCredito';
+import Pagar from './pagar';
 
 export default class MenuView extends Component {
 
@@ -92,6 +93,18 @@ export default class MenuView extends Component {
 		}
 	}
 
+	pagar() {
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: Pagar,
+	          title: 'Pagar',
+	        });
+		}
+		else {
+			this.props.navigator.push({ name: 'pagar'});
+		}
+	}
+
 	pagamento() {
 		if(Platform.OS === 'ios') {
 			this.props.navigator.push({
@@ -119,8 +132,8 @@ export default class MenuView extends Component {
 					<Text>Reservar Vaga</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity>
-					<Text>Estacionar/Pagar</Text>
+				<TouchableOpacity onPress={this.pagar.bind(this)}>
+					<Text>Pagar</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={this.meusPontos.bind(this)}>

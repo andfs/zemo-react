@@ -44,6 +44,10 @@ class ParkoActionSheetIOS extends Component {
 	      this.buttonClicked;
 	    });
 	}
+
+	render() {
+		return(<View></View>);
+	}
 }
 
 class ParkoActionSheetAndroid extends Component {

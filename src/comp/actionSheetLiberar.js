@@ -40,6 +40,10 @@ class ParkoActionSheetLiberarIOS extends Component {
 	      this.buttonClicked;
 	    });
 	}
+
+	render() {
+		return(<View></View>);
+	}
 }
 
 class ParkoActionSheetLiberarAndroid extends Component {

@@ -102,7 +102,7 @@ class SegmentedControlIphone extends Component {
 			return (
 				<SegmentedControlIOS 
 				  values={options}
-				  selectedOption={this.state.selectedIndex}
+				  selectedOption={this.props.abaSelecionada}
 				  onChange={this.onChange.bind(this)}
 				/>
 			);

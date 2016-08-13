@@ -5,9 +5,11 @@
  */
 
 import React, { Component } from 'react';
+
 import {
   AppRegistry,
 } from 'react-native';
+
 import ParkoNavigatorInicial from './src/navigatorInicial'
 
 AppRegistry.registerComponent('parko', () => ParkoNavigatorInicial);
