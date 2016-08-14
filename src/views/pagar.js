@@ -7,14 +7,15 @@ import {
   LayoutAnimation,
   TouchableOpacity,
   TouchableHighlight,
-  ListView
+  ListView,
+  Platform,
+  TextInput
 } from 'react-native';
 
 import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
-import Moment from 'moment';
-import convertePlaca from '../functions/funcoesPlacas'
+import ConfirmarPagamento from './confirmarPagamento';
 
 export default class Pagar extends Component {
 
@@ -24,7 +25,9 @@ export default class Pagar extends Component {
 	  this.state = {
 	  	loading: true,
 	  	latitude: '',
+	  	placa: '',
 	  	listaVazia: false,
+	  	showPlacas: false,
 	  	longitude: '',
 	  	dataSource: []
 	  };
@@ -60,15 +63,38 @@ export default class Pagar extends Component {
 		this.atualizarPosicao();
 	}
 
+	pagar(estacionamentoId) {
+		console.log('pagar'+estacionamentoId);
+		if(Platform.OS === 'ios') {
+			this.props.navigator.push({
+	          component: ConfirmarPagamento,
+	          title: 'Confirmar Pagamento',
+	          passProps: {
+	          	estacionamentoId: estacionamentoId
+	          }
+	        });
+		}
+		else {
+			this.props.navigator.push({ 
+								name: 'confirmarPagamento',
+								passProps: {
+						          	estacionamentoId: estacionamentoId
+						         }
+						     });
+		}
+	}
+
 	renderRow(estacionamento) {
 		if(estacionamento) {
 			return(
 				<View style={styles.containerRow}>
 					<View style={styles.linhaRow}>
 						<Text style={styles.flex1}>{estacionamento.nome}</Text>
-						<Text style={styles.flexRight}>Pagar</Text>
+						<TouchableOpacity onPress={()=> this.pagar(estacionamento._id)}>
+							<Text style={styles.flexRight}>Pagar</Text>
+						</TouchableOpacity>
 					</View>
-					<View>
+					<View style={styles.endereco}>
 						<Text style={styles.infor}>{estacionamento.endereco} - {estacionamento.numero}</Text>
 					</View>
 				</View>
@@ -91,8 +117,29 @@ export default class Pagar extends Component {
 			);
 		}
 		else {
+			let { placas } = this.props;
+			let placasComponente = {};
+			if(placas.length == 0) {
+				placasComponente = (
+					<TextInput placeholder="Digite a placa do seu carro" onChange={(val)=> this.setState({placa: val})}/>
+				);
+			}
+			else if(placas.length == 1) {
+				placasComponente = (
+					<Text>{placas[0].placa}</Text>
+				);
+			}
+			else {
+				placasComponente = (
+					<Text>er</Text>
+				);
+			}
 			return(
 				<View style={styles.container}>
+					<View style={styles.placas}>
+				    	{ placasComponente }
+				    </View>
+
 					<ListView
 				      dataSource={this.state.dataSource}
 				      renderRow={this.renderRow.bind(this)}
@@ -103,6 +150,14 @@ export default class Pagar extends Component {
 	}
 }
 
+export default createContainer(params=>{
+  const handle = Meteor.subscribe('usuariosPlacas');
+
+  return {
+    placas: Meteor.user().placas
+  };
+}, Pagar)
+
 
 const styles = StyleSheet.create({
   container: {
@@ -110,9 +165,17 @@ const styles = StyleSheet.create({
   	justifyContent: 'center',
   	marginTop: 10
   },
+  placas: {
+  	marginTop: 10
+  },
   flexRight: {
   	flex: 1, 
-  	textAlign: 'right'
+  	textAlign: 'right',
+  	fontWeight: 'bold',
+  	fontSize: 24
+  },
+  endereco: {
+  	marginTop: 5
   },
   containerRow: {
   	marginLeft: 5, 
@@ -124,7 +187,9 @@ const styles = StyleSheet.create({
   	flexDirection: 'row'
   },
   flex1: {
-  	flex: 1
+  	flex: 1,
+  	fontWeight: 'bold',
+  	fontSize: 24
   },
   listaVazia: {
   	marginLeft: 5,

@@ -100,11 +100,13 @@ class SegmentedControlIphone extends Component {
 
 		if(this.props.home.state.showControls) {
 			return (
-				<SegmentedControlIOS 
-				  values={options}
-				  selectedOption={this.props.abaSelecionada}
-				  onChange={this.onChange.bind(this)}
-				/>
+				<View>
+					<SegmentedControlIOS 
+					  values={options}
+					  selectedOption={this.props.abaSelecionada}
+					  onChange={this.onChange.bind(this)}
+					/>
+				<View/>
 			);
 		}
 		else {

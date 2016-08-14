@@ -169,7 +169,7 @@ export default class Login extends Component {
                     onLoginFinished={this.loginFacebook.bind(this)}
                     onLogoutFinished={() => alert("logout.")}/>
                    
-                    <TextInput style={styles.inputA} placeholder="Email" keyboardType="email-address" onChangeText={(val) => this.setState({email: val})}/>
+                    <TextInput style={styles.inputA} autoCapitalize="none" placeholder="Email" keyboardType="email-address" onChangeText={(val) => this.setState({email: val})}/>
                     <TextInput style={styles.input} placeholder="Senha" 
                         onChangeText={(val) => this.setState({senha: val})}
                         secureTextEntry={true}/>

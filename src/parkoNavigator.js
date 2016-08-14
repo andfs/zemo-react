@@ -17,6 +17,7 @@ import NovaReserva from './views/novaReserva';
 import MeusPontos from './views/meusPontos';
 import CartoesCredito from './views/cartoesCredito';
 import Pagar from './views/pagar';
+import ConfirmarPagamento from './views/confirmarPagamento';
 
 class ParkoNavigatorIOS extends Component {
 
@@ -113,6 +114,13 @@ class ParkoNavigatorAndroid extends Component {
 		      	return (
 		          <DrawerView navigator={navigator} route={route}>
 		            <Pagar navigator={navigator} route={route}/>
+		          </DrawerView>
+		        );
+
+		    case 'confirmarPagamento':
+		      	return (
+		          <DrawerView navigator={navigator} route={route}>
+		            <ConfirmarPagamento navigator={navigator} route={route}/>
 		          </DrawerView>
 		        );
 
