@@ -65,23 +65,36 @@ export default class Pagar extends Component {
 	}
 
 	pagar(estacionamentoId) {
-		console.log('pagar'+estacionamentoId);
+		let { placas } = this.props;
+		let placa = '';
+		if(placas.length == 0) {
+			placa = convertePlaca(this.state.placa);
+		}
+		else if(placas.length > 1) {
+			placa = this.state.placa;
+		}
+		else {
+			placa = convertePlaca(placas[0].placa);
+		}
+
 		if(Platform.OS === 'ios') {
 			this.props.navigator.push({
 	          component: ConfirmarPagamento,
 	          title: 'Confirmar Pagamento',
 	          passProps: {
-	          	estacionamentoId: estacionamentoId
+	          	estacionamentoId: estacionamentoId,
+	          	placa: placa
 	          }
 	        });
 		}
 		else {
 			this.props.navigator.push({ 
-								name: 'confirmarPagamento',
-								passProps: {
-						          	estacionamentoId: estacionamentoId
-						         }
-						     });
+				name: 'confirmarPagamento',
+				passProps: {
+		          	estacionamentoId: estacionamentoId,
+						placa: placa
+		         }
+		    });
 		}
 	}
 
@@ -126,7 +139,7 @@ export default class Pagar extends Component {
 				let placasComponente = {};
 				if(placas.length == 0) {
 					placasComponente = (
-						<TextInput placeholder="Digite a placa do seu carro" onChange={(val)=> this.setState({placa: val})}/>
+						<TextInput autoCapitalize="characters" placeholder="Digite a placa do seu carro" onChange={(val)=> this.setState({placa: val})}/>
 					);
 				}
 				else if(placas.length == 1) {

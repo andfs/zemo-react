@@ -13,10 +13,6 @@
 - [ ] o mapa tem q ficar acima dos botoes. Nao se pode tampar a logo do Google
 - [ ] Adicionar os botao de voltar ao local inicial dos mapas do google. Botao q eh como um alvo
 
-### Home
-- [ ] o mapa tem q ficar acima dos botoes. Nao se pode tampar a logo do Google
-- [ ] Adicionar os botao de voltar ao local inicial dos mapas do google. Botao q eh como um alvo
-
 ### drawerView.js
 - [ ] Ajustar estilo para centralizar o escrito PARKO
 
@@ -27,6 +23,7 @@
 ### minhasPlacas.js
 - [ ] adicionar fontawesome e colocar icones no lugar do O e do X
 - [ ] trocar estilo do botao de adicionar placa. Fazer um layout padrao para os botoes do sistema
+- [ ] excluir placa
 
 ### novaPlaca.js
 - [ ] Estilo dos botoes
