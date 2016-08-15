@@ -6,16 +6,17 @@ import {
   Alert,
   LayoutAnimation,
   TouchableOpacity,
-  TouchableHighlight,
   ListView,
   Platform,
-  TextInput
+  TextInput,
+  Picker,
 } from 'react-native';
 
 import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
 import ConfirmarPagamento from './confirmarPagamento';
+import convertePlaca from '../functions/funcoesPlacas'
 
 export default class Pagar extends Component {
 
@@ -117,35 +118,47 @@ export default class Pagar extends Component {
 			);
 		}
 		else {
-			let { placas } = this.props;
-			let placasComponente = {};
-			if(placas.length == 0) {
-				placasComponente = (
-					<TextInput placeholder="Digite a placa do seu carro" onChange={(val)=> this.setState({placa: val})}/>
-				);
-			}
-			else if(placas.length == 1) {
-				placasComponente = (
-					<Text>{placas[0].placa}</Text>
-				);
+			let { placas, ready } = this.props;
+			if(!ready) {
+				return(<Loading/>);
 			}
 			else {
-				placasComponente = (
-					<Text>er</Text>
+				let placasComponente = {};
+				if(placas.length == 0) {
+					placasComponente = (
+						<TextInput placeholder="Digite a placa do seu carro" onChange={(val)=> this.setState({placa: val})}/>
+					);
+				}
+				else if(placas.length == 1) {
+					placasComponente = (
+						<Text>{placas[0].placa}</Text>
+					);
+				}
+				else {
+					placasComponente = (
+						<View>
+							<Text style={{marginLeft: 5}}>Escolha a placa que está usando</Text>
+							<Picker selectedValue={this.state.placa} onValueChange={(placa) => this.setState({placa: placa})} style={{width: 300}}>
+								{placas.map((placa)=> (
+									<Picker.Item label={convertePlaca(placa.placa)} value={convertePlaca(placa.placa)} key={placa.placa}/>
+								))}
+							</Picker>
+						</View>
+					);
+				}
+				return(
+					<View>
+				    	{ placasComponente }
+
+				    	<View style={styles.container}>
+							<ListView
+						      dataSource={this.state.dataSource}
+						      renderRow={this.renderRow.bind(this)}
+						    />
+						</View>
+					</View>
 				);
 			}
-			return(
-				<View style={styles.container}>
-					<View style={styles.placas}>
-				    	{ placasComponente }
-				    </View>
-
-					<ListView
-				      dataSource={this.state.dataSource}
-				      renderRow={this.renderRow.bind(this)}
-				    />
-				</View>
-			);
 		}
 	}
 }
@@ -154,7 +167,8 @@ export default createContainer(params=>{
   const handle = Meteor.subscribe('usuariosPlacas');
 
   return {
-    placas: Meteor.user().placas
+    placas: Meteor.user().placas,
+    ready: handle.ready()
   };
 }, Pagar)
 

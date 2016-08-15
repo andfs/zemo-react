@@ -106,7 +106,7 @@ class SegmentedControlIphone extends Component {
 					  selectedOption={this.props.abaSelecionada}
 					  onChange={this.onChange.bind(this)}
 					/>
-				<View/>
+				</View>
 			);
 		}
 		else {

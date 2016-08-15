@@ -205,7 +205,6 @@ export default class Home extends Component {
 	startWatch() {
 		let context = this;
 		let watchID = navigator.geolocation.watchPosition((currentPosition) => {
-			console.log('posicao mudou');
 			if(this.state.procurarVaga) {
 				this.setState({'carPosition.latitude': currentPosition.latitude, 'carPosition.longitude': currentPosition.longitude});
 				this.setState({'region.latitude': currentPosition.latitude, 'region.longitude': currentPosition.longitude});
