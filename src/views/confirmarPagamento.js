@@ -40,7 +40,7 @@ export default class ConfirmarPagamento extends Component {
 			return(<Loading/>);
 		}
 		else {
-			let movimentacao = Meteor.collection('movimentacoes').find({
+			let movimentacao = Meteor.collection('movimentacoes').findOne({
 									placa: placa,
 									dtSaida: null,
 									estacionamentoId: estacionamentoId
@@ -58,10 +58,10 @@ export default class ConfirmarPagamento extends Component {
 			}
 			else {
 				let context = this;
-				if(movimentacao && movimentacao.length > 1) {
+				if(movimentacao) {
 					Meteor.call('getValorPagar', movimentacao, function(error, result) {
 						if(!error) {
-							context.setState({valor: resut, loading: false});
+							context.setState({valor: result, loading: false});
 						}
 						else {
 							context.setState({valor: 'erro', loading: false});	
