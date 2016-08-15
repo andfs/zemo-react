@@ -13,7 +13,6 @@ import {
 import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
-import Moment from 'moment';
 import convertePlaca from '../functions/funcoesPlacas';
 
 export default class ConfirmarPagamento extends Component {
@@ -22,43 +21,76 @@ export default class ConfirmarPagamento extends Component {
 	  super(props);
 	
 	  this.state = {
-	  	loading: true
+	  	loading: true,
+	  	valor: ''
 	  };
+	}
+
+	voltar() {
+		this.props.navigator.pop();
 	}
 
 	render() {
 		let placasArray = [];
-		let {ready, placas} = this.props;
+		let {ready}          = this.props;
+		let placa            = this.props.route.passProps.placa;
+		let estacionamentoId = this.props.route.passProps.estacionamentoId;
 
-		if(!ready || this.state.loading) {
+		if(!ready) {
 			return(<Loading/>);
 		}
 		else {
-			for (var i = 0; i < placas.length; i++) {
-				let placa = placas[i];
-				placasArray.push(placa.placa);
-			}
 			let movimentacao = Meteor.collection('movimentacoes').find({
-									placa: {$in: placasArray},
+									placa: placa,
 									dtSaida: null,
-									estacionamentoId: this.props.estacionamentoId
+									estacionamentoId: estacionamentoId
 								});
 
-			
-
-			//buscar no meteor o valor a pagar da primeira movimentacao
+			if(movimentacao.length == 0) {
+				return(
+					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+						<Text>Nenhuma movimentação encontrada com a placa {placa}</Text>
+						<TouchableOpacity onPress={this.voltar.bind(this)}>
+							<Text>Voltar</Text>
+						</TouchableOpacity>
+					</View>
+				);
+			}
+			else {
+				let context = this;
+				if(movimentacao && movimentacao.length > 1) {
+					Meteor.call('getValorPagar', movimentacao, function(error, result) {
+						if(!error) {
+							context.setState({valor: resut, loading: false});
+						}
+						else {
+							context.setState({valor: 'erro', loading: false});	
+						}
+					});	
+				}
+				
+				if(this.state.loading) {
+					return(<Loading/>);
+				}
+				else {
+					return(
+						<View>
+							<Text>{this.state.valor}</Text>						
+						</View>
+					);
+				}
+			}
 		}
 	}
 }
 
 export default createContainer(params=>{
   const handle = Meteor.subscribe('movimentacoesApp');
-  const handle2 = Meteor.subscribe('usuariosPlacas');
 
   return {
-    ready: handle.ready() && handle2.ready(),
-    placas: Meteor.user().placas
+    ready: handle.ready()
   };
+
 }, ConfirmarPagamento)
 
 const styles = StyleSheet.create({
