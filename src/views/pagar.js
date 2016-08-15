@@ -30,7 +30,8 @@ export default class Pagar extends Component {
 	  	listaVazia: false,
 	  	showPlacas: false,
 	  	longitude: '',
-	  	dataSource: []
+	  	dataSource: [],
+	  	placaAlterada: false
 	  };
 	}
 
@@ -74,7 +75,12 @@ export default class Pagar extends Component {
 			placa = this.state.placa;
 		}
 		else {
-			placa = convertePlaca(placas[0].placa);
+			if(this.state.placaAlterada) {
+				placa = convertePlaca(this.state.placa);
+			}
+			else {
+				placa = convertePlaca(placas[0].placa);
+			}
 		}
 
 		if(Platform.OS === 'ios') {
@@ -143,8 +149,12 @@ export default class Pagar extends Component {
 					);
 				}
 				else if(placas.length == 1) {
+					let placa = convertePlaca(placas[0].placa);
 					placasComponente = (
-						<Text>{placas[0].placa}</Text>
+						<View>
+							<Text>Placa utilizada:</Text>
+							<TextInput style={{borderWidth: 0.5, borderColor: '#0f0f0f',}} autoCapitalize="characters" value={placa} onChange={(val)=> this.setState({placa: val, placaAlterada: true})}/>
+						</View>
 					);
 				}
 				else {

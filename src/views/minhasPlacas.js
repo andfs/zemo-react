@@ -14,6 +14,10 @@ import NovaPlaca from './novaPlaca'
 
 export default class MinhasPlacas extends Component {
 
+	excluirPlaca(placa) {
+		Meteor.collection('users').update({_id: Meteor.userId()}, {$pull: {placas: {placa: placa.placa}}});
+	}
+
 	renderRow(item) {
 		if(item) {
 			return (
@@ -29,7 +33,7 @@ export default class MinhasPlacas extends Component {
 									<Text style={styles.placa}>O</Text>
 								</TouchableOpacity>
 
-								<TouchableOpacity>
+								<TouchableOpacity onPress={()=>this.excluirPlaca(item)}>
 									<Text style={styles.placa}>X</Text>
 								</TouchableOpacity>						
 							</View>
