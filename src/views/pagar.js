@@ -65,7 +65,7 @@ export default class Pagar extends Component {
 		this.atualizarPosicao();
 	}
 
-	pagar(estacionamentoId) {
+	pagar(estacionamento) {
 		let { placas } = this.props;
 		let placa = '';
 		if(placas.length == 0) {
@@ -88,7 +88,9 @@ export default class Pagar extends Component {
 	          component: ConfirmarPagamento,
 	          title: 'Confirmar Pagamento',
 	          passProps: {
-	          	estacionamentoId: estacionamentoId,
+	          	estacionamentoId: estacionamento._id,
+	          	nome: estacionamento.nome,
+	          	idRecebedor: estacionamento.idRecebedor,
 	          	placa: placa
 	          }
 	        });
@@ -97,8 +99,10 @@ export default class Pagar extends Component {
 			this.props.navigator.push({ 
 				name: 'confirmarPagamento',
 				passProps: {
-		          	estacionamentoId: estacionamentoId,
-						placa: placa
+		          	estacionamentoId: estacionamento._id,
+	          		nome: estacionamento.nome,
+	          		idRecebedor: estacionamento.idRecebedor,
+					placa: placa
 		         }
 		    });
 		}
@@ -110,7 +114,7 @@ export default class Pagar extends Component {
 				<View style={styles.containerRow}>
 					<View style={styles.linhaRow}>
 						<Text style={styles.flex1}>{estacionamento.nome}</Text>
-						<TouchableOpacity onPress={()=> this.pagar(estacionamento._id)}>
+						<TouchableOpacity onPress={()=> this.pagar(estacionamento)}>
 							<Text style={styles.flexRight}>Pagar</Text>
 						</TouchableOpacity>
 					</View>
