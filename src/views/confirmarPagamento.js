@@ -26,6 +26,7 @@ export default class ConfirmarPagamento extends Component {
 	  	valor: '',
 	  	pago: false,
 	  	loadingCard: true,
+	  	pagando: false,
 	  	movimentacaoId: ''
 	  };
 	}
@@ -45,12 +46,13 @@ export default class ConfirmarPagamento extends Component {
 	}
 
 	pagar() {
+		this.setState({pagando: true});
 		let transaction = {
 			api_key: 'ak_test_T6dP4UisH26UhIbsFc80hnR4CUd26R',
 			amount: this.state.valor.replace('.', '').replace(',', '').replace('R$', '').trim(),
 			card_id: this.state.cardKey,
 			payment_method: 'credit_card',
-			postback_url: 'http://localhost:3000/api/v1/processar_pagamento',
+			postback_url: 'http://192.168.25.23:3000/api/v1/processar_pagamento',
 			async: true,
 			soft_descriptor: 'parko ' + this.props.route.passProps.nome.toString().substring(0, 7),
 			split_rules: [ {
@@ -58,10 +60,16 @@ export default class ConfirmarPagamento extends Component {
 				charge_processing_fee: true,
 				percentage: 100
 			}],
+			customer: {
+				email: Meteor.user().email
+			},
 			metadata: {
 				idUsuario: Meteor.userId(),
 				idEstacionamento: this.props.route.passProps.estacionamentoId,
-				movimentacaoId: this.state.movimentacaoId
+				movimentacaoId: this.state.movimentacaoId,
+				nomeEstacionamento: this.props.route.passProps.nomeEstacionamento,
+				enderecoEstacionamento: this.props.route.passProps.enderecoEstacionamento,
+				dtSaida: new Date()
 			}
 		};
 		
@@ -74,7 +82,8 @@ export default class ConfirmarPagamento extends Component {
 		  body: JSON.stringify(transaction)
 		}).then((response) => response.json())
 	      .then((responseJson) => {
-	        this.setState({pago: true});
+	      	LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+	        this.setState({pago: true, pagando: false});
 	      })
 	      .catch((error) => {
 	        alert(error);
@@ -133,15 +142,13 @@ export default class ConfirmarPagamento extends Component {
 							<Text>O valor devido ao estacionamento é de:</Text>
 							<View style={styles.valorView}>
 								<Text style={styles.valor}> {this.state.valor} </Text>
-								<TouchableOpacity style={styles.button} onPress={this.pagar.bind(this)}>
-									<Text style={{color: 'white'}}>Confirmar Pagamento</Text>
+							</View>
+								<Text>Processado pagamento. Você será notificado em breve.</Text>
+							<View style={{alignItems: 'center', justifyContent: 'center'}}>
+								<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
+									<Text style={{color: 'white'}}>Ok</Text>
 								</TouchableOpacity>
 							</View>
-							<Text>Pagamento está sendo processado. Você será notificado em breve.</Text>
-							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
-								<Text style={{color: 'white'}}>Voltar</Text>
-							</TouchableOpacity>
-
 						</View>
 					);
 				}
@@ -151,9 +158,11 @@ export default class ConfirmarPagamento extends Component {
 							<Text>O valor devido ao estacionamento é de:</Text>
 							<View style={styles.valorView}>
 								<Text style={styles.valor}> {this.state.valor} </Text>
-								<TouchableOpacity style={styles.button} onPress={this.pagar.bind(this)}>
-									<Text style={{color: 'white'}}>Confirmar Pagamento</Text>
-								</TouchableOpacity>
+								{this.state.pagando ? null : 
+									<TouchableOpacity style={styles.button} onPress={this.pagar.bind(this)}>
+										<Text style={{color: 'white'}}>Confirmar Pagamento</Text>
+									</TouchableOpacity>
+								}
 							</View>
 						</View>
 					);

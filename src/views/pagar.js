@@ -91,6 +91,8 @@ export default class Pagar extends Component {
 	          	estacionamentoId: estacionamento._id,
 	          	nome: estacionamento.nome,
 	          	idRecebedor: estacionamento.idRecebedor,
+	          	nomeEstacionamento: estacionamento.nome,
+	          	enderecoEstacionamento: estacionamento.endereco + ", " + estacionamento.numero,
 	          	placa: placa
 	          }
 	        });
@@ -102,6 +104,8 @@ export default class Pagar extends Component {
 		          	estacionamentoId: estacionamento._id,
 	          		nome: estacionamento.nome,
 	          		idRecebedor: estacionamento.idRecebedor,
+	          		nomeEstacionamento: estacionamento.nome,
+	          		enderecoEstacionamento: estacionamento.endereco + ", " + estacionamento.numero,
 					placa: placa
 		         }
 		    });
