@@ -14,6 +14,8 @@ import {
 import ParkoNavigator from './parkoNavigator';
 import Meteor, { connectMeteor, Accounts } from 'react-native-meteor';
 import Loading from './comp/loading';
+import Background from './comp/background';
+import { stylesGeral, color } from './estilos/geral';
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -23,7 +25,6 @@ const {
 
 const ACCESS_TOKEN = 'parkoAccess_Token';
 Meteor.connect('ws://localhost:3000/websocket');
-
 
 export default class Login extends Component {
 
@@ -82,7 +83,7 @@ export default class Login extends Component {
     let email = this.state.email;
     let context = this;
     if(!email) {
-      this.setState({erro: 'Preencha o email para lhe enviarmos sua nova senha.'});
+      this.setState({erro: 'Preencha o e-mail para lhe enviarmos sua nova senha.'});
     }
     else {
       Accounts.forgotPassword({email: email}, function(error) {
@@ -163,31 +164,43 @@ export default class Login extends Component {
       }
       return (
         <View style={styles.container}>
-                  <Text style={styles.title}>PARKO</Text>
-                  <LoginButton style={styles.button}
-                    readPermissions={["email", "user_friends"]}
-                    onLoginFinished={this.loginFacebook.bind(this)}
-                    onLogoutFinished={() => alert("logout.")}/>
-                   
-                    <TextInput style={styles.inputA} autoCapitalize="none" placeholder="Email" keyboardType="email-address" onChangeText={(val) => this.setState({email: val})}/>
-                    <TextInput style={styles.input} placeholder="Senha" 
-                        onChangeText={(val) => this.setState({senha: val})}
-                        secureTextEntry={true}/>
+          <Background>
+            <View style={styles.innerContainer}>
+              <Text style={stylesGeral.title}>PARKO</Text>
+              <LoginButton style={styles.button}
+                readPermissions={["email", "user_friends"]}
+                onLoginFinished={this.loginFacebook.bind(this)}
+                onLogoutFinished={() => alert("logout.")}/>
+               
+                <TextInput style={styles.inputA} placeholderTextColor={color.light1} autoCapitalize="none" 
+                          placeholder="E-mail" keyboardType="email-address" 
+                          onChangeText={(val) => this.setState({email: val})}/>
+                
 
-                    <TouchableHighlight onPress={this.loginProprio.bind(this)}>
-                        <Text>Login</Text>
-                    </TouchableHighlight>
-                      <TouchableHighlight style={styles.cadastrar} onPress={this.cadastrar.bind(this)}>
-                        <Text style={{color: '#0000ff', borderColor: '#0000ff'}}>Cadastrar</Text>
-                      </TouchableHighlight>
-                      <TouchableHighlight style={styles.esqueciSenha} onPress={this.recuperarSenha.bind(this)}>
-                        <Text style={{color: '#0000ff', borderColor: '#0000ff'}}>Esqueci minha senha</Text>
-                      </TouchableHighlight>
-                    <Text>
-                      {this.state.erro}
-                    </Text>
+                <TextInput style={styles.input} placeholder="Senha" placeholderTextColor={color.light1}
+                    onChangeText={(val) => this.setState({senha: val})}
+                    secureTextEntry={true}/>
 
-            </View> 
+                <TouchableHighlight onPress={this.loginProprio.bind(this)}>
+                    <Text style={{color: color.light1}}>Login</Text>
+                </TouchableHighlight>
+                
+                <TouchableHighlight style={styles.esqueciSenha} onPress={this.recuperarSenha.bind(this)}>
+                  <Text style={{color: color.light2, textDecorationLine: 'underline'}}>Esqueci minha senha</Text>
+                </TouchableHighlight>
+                
+                <Text style={stylesGeral.error}>
+                  {this.state.erro}
+                </Text>
+
+                <View style={{marginTop: 110}}>
+                  <TouchableHighlight onPress={this.cadastrar.bind(this)}>
+                    <Text style={{color: color.light2, textDecorationLine: 'underline'}}>Ainda não possui uma conta? Cadastra-se</Text>
+                  </TouchableHighlight>
+                </View>
+            </View>
+          </Background>
+        </View> 
       );
     }
     else {
@@ -199,26 +212,21 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-
   capa: {
     flex: 1,
     flexDirection: 'row'
   },
   cadastrar: {
+    flex: 1,
     alignSelf: 'flex-start',
     borderBottomWidth: 1,
   },
   esqueciSenha: {
+    flex: 1,
     alignSelf: 'flex-end',
-    borderBottomWidth: 1,
   },
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    padding: 10,
-    paddingTop: 180
   },
   button: {
     height: 30,
@@ -227,18 +235,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: 'center'
   },
-  title: {
-    fontSize: 25,
-    marginBottom: 15
-  },
   inputA: {
     height: 30,
     alignSelf: 'stretch',
     marginTop: 20,
     padding: 4,
     fontSize: 18,
-    borderWidth: 1,
-    borderColor: '#48bbec'
+    borderColor: color.light1,
+    borderBottomColor: color.light1,
+    color: color.light1,
   },
   input: {
     height: 30,
@@ -247,6 +252,15 @@ const styles = StyleSheet.create({
     padding: 4,
     fontSize: 18,
     borderWidth: 1,
-    borderColor: '#48bbec'
-  }
+    borderColor: color.light1,
+    borderBottomColor: color.light1,
+    color: color.light1,
+  },
+    innerContainer: {
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: 10,
+      paddingTop: 180,
+      backgroundColor: 'transparent'
+    }
 });

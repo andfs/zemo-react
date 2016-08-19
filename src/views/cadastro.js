@@ -9,6 +9,8 @@ import {
 
 import Meteor from 'react-native-meteor';
 import ParkoNavigator from '../parkoNavigator';
+import Background from '../comp/background';
+import { stylesGeral, color } from '../estilos/geral';
 
 export default class Cadastro extends Component {
 
@@ -78,25 +80,52 @@ export default class Cadastro extends Component {
 			);
 		}
 		return(
-			<View>
-				<TextInput placeholder="Nome completo" onChangeText={(val) => this.setState({nome: val})}/>
+			<View style={styles.container}>
+				<Background>
+					<View style={styles.innerContainer}>
+						<View style={styles.titleContainer}>
+							<Text style={stylesGeral.title}>Cadastro</Text>
+						</View>
+						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Nome completo" onChangeText={(val) => this.setState({nome: val})}/>
 
-				<TextInput placeholder="E-mail" onChangeText={(val) => this.setState({email: val})} keyboardType="email-address"/>
+						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="E-mail" onChangeText={(val) => this.setState({email: val})} keyboardType="email-address"/>
 
-				<TextInput placeholder="Senha" onChangeText={(val) => this.setState({senha: val})} secureTextEntry={true}/>
+						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Senha" onChangeText={(val) => this.setState({senha: val})} secureTextEntry={true}/>
 
-				<TextInput placeholder="Confirme a senha" onChangeText={(val) => this.setState({senha2: val})} secureTextEntry={true}/>
+						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Confirme a senha" onChangeText={(val) => this.setState({senha2: val})} secureTextEntry={true}/>
 
-				<TouchableOpacity onPress={this.cadastrar.bind(this)}>
-					<Text>Cadastrar</Text>
-				</TouchableOpacity>
-				<TouchableOpacity onPress={this.voltar.bind(this)}>
-					<Text>Voltar</Text>
-				</TouchableOpacity>
-				<Text>
-		            {this.state.erro}
-		        </Text>
+						<TouchableOpacity onPress={this.cadastrar.bind(this)}>
+							<Text>Cadastrar</Text>
+						</TouchableOpacity>
+						<TouchableOpacity onPress={this.voltar.bind(this)}>
+							<Text>Voltar</Text>
+						</TouchableOpacity>
+						<Text>
+				            {this.state.erro}
+				        </Text>
+				    </View>
+			    </Background>
 			</View>
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	},
+	titleContainer: {
+		alignItems: 'center',
+		marginBottom: 30,
+	},
+	input: {
+		color: color.light1,
+		padding: 4,
+		fontSize: 18,
+	},
+	innerContainer: {
+		marginTop: 65,
+		marginLeft: 10,
+		marginRight: 10
+	}
+});
