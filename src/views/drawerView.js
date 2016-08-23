@@ -9,12 +9,15 @@ import {
   Navigator,
   ToolbarAndroid,
   Dimensions,
+  StatusBar,
   DrawerLayoutAndroid,
+  Image
 } from 'react-native';
 
 import MenuView from './menuView';
 import Loading from '../comp/loading';
 import ParkoNavigatorInicial from '../navigatorInicial';
+import Background from '../comp/background';
 
 const {height, width} = Dimensions.get('window');
 
@@ -53,21 +56,24 @@ export default class DrawerView extends Component {
       );
     }
     return (
-      <View style={{backgroundColor: 'white'}}>
-        <ToolbarAndroid
-            navIcon={require('../../resources/img/hamburger.png')}
-            onIconClicked={this.handleDrawer.bind(this)}
-            title='PARKO'
-            style={{height: 45, backgroundColor: '#008b8b'}}
-          />
-        <DrawerLayoutAndroid
-          ref={'drawer'}
-          drawerWidth={200}
-          style={{height: height - 70}}
-          drawerPosition={DrawerLayoutAndroid.positions.Left}
-          renderNavigationView={() => <MenuView navigator={this.props.navigator} drawer={this.refs.drawer} pai={this} />} >
-            {this.props.children}
-        </DrawerLayoutAndroid>
+      <View>
+          <Background>
+            <ToolbarAndroid
+                navIcon={require('../../resources/img/hamburger.png')}
+                onIconClicked={this.handleDrawer.bind(this)}
+                title='PARKO'
+                titleColor='white'
+                style={{height: 48, marginTop:20}}
+              />
+            <DrawerLayoutAndroid
+              ref={'drawer'}
+              drawerWidth={200}
+              style={{height: height - 70}}
+              drawerPosition={DrawerLayoutAndroid.positions.Left}
+              renderNavigationView={() => <MenuView navigator={this.props.navigator} drawer={this.refs.drawer} pai={this} />} >
+                {this.props.children}
+            </DrawerLayoutAndroid>
+          </Background>
       </View>
     );
   }
@@ -80,6 +86,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  backgroundImage: {
+        flex: 1,
+        resizeMode: Image.resizeMode.stretch,
+        width: null,
+        height: null,
+    },
   instructions: {
     textAlign: 'center',
     color: '#333333',

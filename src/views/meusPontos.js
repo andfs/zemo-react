@@ -30,7 +30,7 @@ export default class MeusPontos extends Component {
 				<View style={styles.container}>
 					<View style={{alignItems: 'center', justifyContent: 'center'}}>
 						<Text style={styles.pontos}>{pontos}</Text>
-						<Text style={styles.descricao}>Troque seus pontos por horas grátis em estacionamentos.</Text>
+						<Text style={styles.descricao}>Troque seus ponts por horas grátis em estacionamentos.</Text>
 					</View>
 					<View style={{alignItems: 'stretch', justifyContent: 'center'}}>
 						<TouchableOpacity style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>

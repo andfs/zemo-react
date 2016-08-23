@@ -18,6 +18,7 @@ import MeusPontos from './views/meusPontos';
 import CartoesCredito from './views/cartoesCredito';
 import Pagar from './views/pagar';
 import ConfirmarPagamento from './views/confirmarPagamento';
+import Background from './comp/background'
 
 class ParkoNavigatorIOS extends Component {
 
@@ -31,17 +32,20 @@ class ParkoNavigatorIOS extends Component {
 
 	render() {
 		return(
-			<NavigatorIOS
-				ref='nav'
-		        initialRoute={{
-		          component: Home,
-		          title: 'PARKO',
-		          rightButtonTitle: 'Menu',
-		          onRightButtonPress: () => this.openMenu(),
+			<Background>
+				<NavigatorIOS
+					ref='nav'
+					translucent="true"
+			        initialRoute={{
+			          component: Home,
+			          title: 'PARKO',
+			          rightButtonTitle: 'Menu',
+			          onRightButtonPress: () => this.openMenu(),
 
-		        }}
-		        style={{flex: 1}}
-		      />
+			        }}
+			        style={{flex: 1}}
+			      />
+			</Background>
 		);
 	}
 }

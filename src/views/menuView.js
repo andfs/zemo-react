@@ -121,7 +121,7 @@ export default class MenuView extends Component {
 		return(
 			<View style={estiloMenu.drawer}>
 				<TouchableOpacity>
-					<Text>Home</Text>
+					<Text>Hoe</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={this.pagamento.bind(this)}>
