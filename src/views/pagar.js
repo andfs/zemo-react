@@ -16,7 +16,8 @@ import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
 import ConfirmarPagamento from './confirmarPagamento';
-import convertePlaca from '../functions/funcoesPlacas'
+import convertePlaca from '../functions/funcoesPlacas';
+import ParkoButton from '../comp/parkoButton';
 
 export default class Pagar extends Component {
 
@@ -118,9 +119,7 @@ export default class Pagar extends Component {
 				<View style={styles.containerRow}>
 					<View style={styles.linhaRow}>
 						<Text style={styles.flex1}>{estacionamento.nome}</Text>
-						<TouchableOpacity onPress={()=> this.pagar(estacionamento)}>
-							<Text style={styles.flexRight}>Pagar</Text>
-						</TouchableOpacity>
+						<ParkoButton onPress={()=> this.pagar(estacionamento)} texto="Pagar"/>
 					</View>
 					<View style={styles.endereco}>
 						<Text style={styles.infor}>{estacionamento.endereco} - {estacionamento.numero}</Text>
@@ -138,9 +137,7 @@ export default class Pagar extends Component {
 			return(
 				<View style={styles.container}>
 					<Text style={styles.listaVazia}>Nenhum estacionamento encontrado perto de onde você está. Caso esteja dentro do estacionamento, aproxime-se da portaria e clique no botão abaixo.</Text> 
-					<TouchableOpacity onPress={this.atualizarPosicao.bind(this)}>
-						<Text>Procurar estacionamento.</Text> 
-					</TouchableOpacity>
+					<ParkoButton onPress={this.atualizarPosicao.bind(this)} texto="Procurar estacionamento"/>
 				</View>
 			);
 		}

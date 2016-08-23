@@ -10,6 +10,7 @@ import {
 import Meteor from 'react-native-meteor';
 import ParkoNavigator from '../parkoNavigator';
 import Background from '../comp/background';
+import ParkoButton from '../comp/parkoButton';
 import { stylesGeral, color } from '../estilos/geral';
 
 export default class Cadastro extends Component {
@@ -94,12 +95,8 @@ export default class Cadastro extends Component {
 
 						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Confirme a senha" onChangeText={(val) => this.setState({senha2: val})} secureTextEntry={true}/>
 
-						<TouchableOpacity onPress={this.cadastrar.bind(this)}>
-							<Text>Cadastrar</Text>
-						</TouchableOpacity>
-						<TouchableOpacity onPress={this.voltar.bind(this)}>
-							<Text>Voltar</Text>
-						</TouchableOpacity>
+						<ParkoButton onPress={this.cadastrar.bind(this)} texto="Cadastrar"/>
+						<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
 						<Text>
 				            {this.state.erro}
 				        </Text>

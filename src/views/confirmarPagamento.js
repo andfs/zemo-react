@@ -5,7 +5,6 @@ import {
   Text,
   Alert,
   LayoutAnimation,
-  TouchableOpacity,
   ListView,
   AsyncStorage
 } from 'react-native';
@@ -13,6 +12,7 @@ import {
 import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
+import ParkoButton from '../comp/parkoButton';
 import convertePlaca from '../functions/funcoesPlacas';
 import Moment from 'moment';
 
@@ -114,9 +114,7 @@ export default class ConfirmarPagamento extends Component {
 				return(
 					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 						<Text>Nenhuma movimentação encontrada com a placa {placa}</Text>
-						<TouchableOpacity onPress={this.voltar.bind(this)}>
-							<Text>Voltar</Text>
-						</TouchableOpacity>
+						<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
 					</View>
 				);
 			}
@@ -145,9 +143,7 @@ export default class ConfirmarPagamento extends Component {
 							</View>
 								<Text>Processado pagamento. Você será notificado em breve.</Text>
 							<View style={{alignItems: 'center', justifyContent: 'center'}}>
-								<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
-									<Text style={{color: 'white'}}>Ok</Text>
-								</TouchableOpacity>
+								<ParkoButton onPress={this.voltar.bind(this)} texto="Ok"/>
 							</View>
 						</View>
 					);
@@ -159,9 +155,7 @@ export default class ConfirmarPagamento extends Component {
 							<View style={styles.valorView}>
 								<Text style={styles.valor}> {this.state.valor} </Text>
 								{this.state.pagando ? null : 
-									<TouchableOpacity style={styles.button} onPress={this.pagar.bind(this)}>
-										<Text style={{color: 'white'}}>Confirmar Pagamento</Text>
-									</TouchableOpacity>
+									<ParkoButton onPress={this.pagar.bind(this)} texto="Confirmar Pagamento"/>
 								}
 							</View>
 						</View>
@@ -195,18 +189,6 @@ const styles = StyleSheet.create({
   valor: {
   	fontWeight: 'bold',
   	fontSize: 28
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 250
   }
   
 });

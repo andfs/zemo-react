@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 
 import Meteor, { createContainer, MeteorComplexListView } from 'react-native-meteor';
-import NovaPlaca from './novaPlaca'
+import NovaPlaca from './novaPlaca';
+import ParkoButton from '../comp/parkoButton';
 
 export default class MinhasPlacas extends Component {
 
@@ -71,17 +72,13 @@ export default class MinhasPlacas extends Component {
 			          renderRow={this.renderRow.bind(this)}
 			        />
 
-			        <TouchableOpacity onPress={this.novaPlaca.bind(this)} style={styles.button}>
-			        	<Text>Adicionar placa</Text>
-			        </TouchableOpacity>
+			        <ParkoButton onPress={this.novaPlaca.bind(this)} texto="Adicionar placa"/>
 				</View>
 			);	
 		}
 		else {
 			return (
-				<TouchableOpacity style={styles.button} onPress={this.novaPlaca.bind(this)}>
-		        	<Text>Adicionar placa</Text>
-		        </TouchableOpacity>
+				<ParkoButton onPress={this.novaPlaca.bind(this)} texto="Adicionar placa"/>
 			);
 		}
 		

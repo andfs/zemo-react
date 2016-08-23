@@ -61,8 +61,6 @@ export default class DrawerView extends Component {
             <ToolbarAndroid
                 navIcon={require('../../resources/img/hamburger.png')}
                 onIconClicked={this.handleDrawer.bind(this)}
-                title='PARKO'
-                titleColor='white'
                 style={{height: 48, marginTop:20}}
               />
             <DrawerLayoutAndroid

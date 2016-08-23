@@ -13,7 +13,8 @@ import Meteor, { createContainer } from 'react-native-meteor';
 import Loading from '../comp/loading';
 import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
-import convertePlaca from '../functions/funcoesPlacas'
+import convertePlaca from '../functions/funcoesPlacas';
+import ParkoButton from '../comp/parkoButton';
 
 
 export default class NovaReserva extends Component {
@@ -119,12 +120,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<TouchableOpacity style={styles.button} onPress={this.reservar.bind(this)}>
-								<Text>Cadastrar</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
-								<Text>Voltar</Text>
-							</TouchableOpacity>
+							<ParkoButton onPress={this.reservar.bind(this)} texto="Cadastrar"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
 						</View>
 						<Text>
 				            {this.state.erro}
@@ -169,12 +166,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<TouchableOpacity style={styles.button} onPress={this.reservar.bind(this)}>
-								<Text>Cadastrar</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
-								<Text>Voltar</Text>
-							</TouchableOpacity>
+							<ParkoButton onPress={this.reservar.bind(this)} texto="Cadastrar"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
 						</View>
 						<Text>
 				            {this.state.erro}
@@ -216,12 +209,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<TouchableOpacity style={styles.button} onPress={this.reservar.bind(this)}>
-								<Text>Reservar</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={styles.button} onPress={this.voltar.bind(this)}>
-								<Text>Voltar</Text>
-							</TouchableOpacity>
+							<ParkoButton onPress={this.reservar.bind(this)} texto="Cadastrar"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
 						</View>
 						<Text>
 				            {this.state.erro}

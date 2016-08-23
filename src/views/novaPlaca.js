@@ -25,7 +25,8 @@ var Placa = t.struct({
 });
 
 import Meteor, { createContainer, MeteorComplexListView } from 'react-native-meteor';
-import MinhasPlacas from './minhasPlacas'
+import MinhasPlacas from './minhasPlacas';
+import ParkoButton from '../comp/parkoButton';
 
 export default class NovaPlaca extends Component {
 
@@ -64,9 +65,7 @@ export default class NovaPlaca extends Component {
 	          ref="form"
 	          type={Placa}
 	        />
-	        <TouchableOpacity style={styles.button} onPress={this.onPress.bind(this)} underlayColor='#99d9f4'>
-	          <Text style={styles.buttonText}>Salvar</Text>
-	        </TouchableOpacity>
+          <ParkoButton onPress={this.onPress.bind(this)} texto="Salvar"/>
 	      </View>
 	    );
 	}

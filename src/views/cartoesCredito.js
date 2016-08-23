@@ -5,8 +5,6 @@ import {
   Text,
   Alert,
   LayoutAnimation,
-  TouchableOpacity,
-  TouchableHighlight,
   AsyncStorage
 } from 'react-native';
 
@@ -14,7 +12,8 @@ import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
 import Moment from 'moment';
-import convertePlaca from '../functions/funcoesPlacas'
+import convertePlaca from '../functions/funcoesPlacas';
+import ParkoButton from '../comp/parkoButton';
 
 export default class CartoesCredito extends Component {
 
@@ -81,7 +80,6 @@ export default class CartoesCredito extends Component {
 		let context = this;
 		NativeModules.CardScan.scanCard().then(function(result) {
 	    		LayoutAnimation.spring();
-	    		console.log(result);
 	    		context.setState({
 	    			cartaoOk: true,
 	    			cardType: result.cardType,
@@ -139,9 +137,7 @@ export default class CartoesCredito extends Component {
 	renderNovoCartao() {
 		const {ready, pontos} = this.props;
 		let botao = (
-					<TouchableOpacity onPress={this.onPress.bind(this)}>
-						<Text>Clique para escanear seu cartão de crédito</Text>
-					</TouchableOpacity>
+				<ParkoButton onPress={this.onPress.bind(this)} texto="Clique para escanear seu cartão de crédito"/>
 			);
 		if(!ready) {
 			return(
@@ -178,15 +174,11 @@ export default class CartoesCredito extends Component {
 						</View>
 
 						<View style={styles.info}>
-							<TouchableHighlight style={styles.button} onPress={this.confirmacao.bind(this)}>
-								<Text>Confirmo as informações acima</Text>
-							</TouchableHighlight>
+							<ParkoButton onPress={this.confirmacao.bind(this)} texto="Confirmo as informações acima" tamanho="medio"/>
 						</View>
 
 						<View style={styles.info}>
-							<TouchableHighlight style={styles.button} onPress={this.cancelar.bind(this)}>
-								<Text>Cancelar</Text>
-							</TouchableHighlight>
+							<ParkoButton onPress={this.cancelar.bind(this)} texto="Cancelar"/>
 						</View>
 					</View>
 				</View>
@@ -198,9 +190,7 @@ export default class CartoesCredito extends Component {
 				return(
 					<View>
 						<View style={styles.container}>
-							<TouchableOpacity onPress={this.onPress.bind(this)}>
-								<Text>Clique aqui para editar seu cartão</Text>
-							</TouchableOpacity>
+							<ParkoButton onPress={this.onPress.bind(this)} texto="Editar Cartão"/>
 						</View>
 						<View style={styles.infoContainer}>
 							<View style={styles.info}>
@@ -219,15 +209,11 @@ export default class CartoesCredito extends Component {
 							</View>
 
 							<View style={styles.info}>
-								<TouchableHighlight style={styles.button} onPress={this.confirmacao.bind(this)}>
-									<Text>Confirmo as informações acima</Text>
-								</TouchableHighlight>
+								<ParkoButton onPress={this.confirmacao.bind(this)} texto="Confirmo as informações acima" tamanho="medio"/>
 							</View>
 
 							<View style={styles.info}>
-								<TouchableHighlight style={styles.button} onPress={this.cancelar.bind(this)}>
-									<Text>Cancelar</Text>
-								</TouchableHighlight>
+								<ParkoButton onPress={this.cancelar.bind(this)} texto="Cancelar"/>
 							</View>
 						</View>
 					</View>
@@ -237,9 +223,7 @@ export default class CartoesCredito extends Component {
 				return(
 					<View>
 						<View style={styles.container}>
-							<TouchableOpacity onPress={this.onPress.bind(this)}>
-								<Text>Clique aqui para editar seu cartão</Text>
-							</TouchableOpacity>
+							<ParkoButton onPress={this.onPress.bind(this)} texto="Editar Cartão"/>
 						</View>
 						<View style={styles.infoContainer}>
 							<View style={styles.info}>
@@ -295,17 +279,5 @@ const styles = StyleSheet.create({
   },
   info: {
   	marginTop: 10
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
   }
 });
