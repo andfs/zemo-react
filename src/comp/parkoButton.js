@@ -18,7 +18,7 @@ export default class ParkoButton extends Component {
 	}
 
 	render() {
-		let estilo = this.props.tamanho === "medio" ? styles.buttonMedio : styles.button;
+		let estilo = this.props.tamanho === "medio" ? styles.buttonMedio : this.props.tamanho === "pequeno" ? styles.buttonPequeno : styles.button;
 		return (
 	        <View style={{alignItems: 'stretch', justifyContent: 'center'}}>
 	        	<TouchableOpacity style={estilo} onPress={this.props.onPress} underlayColor='#99d9f4'>
@@ -55,5 +55,18 @@ const styles = StyleSheet.create({
 	    alignItems: 'center',
 	    justifyContent: 'center',
 	    width: 300
+	},
+	buttonPequeno: {
+	    height: 36,
+	    backgroundColor: '#48BBEC',
+	    borderColor: '#48BBEC',
+	    borderWidth: 1,
+	    borderRadius: 8,
+	    marginBottom: 10,
+	    alignSelf: 'stretch',
+	    alignItems: 'center',
+	    justifyContent: 'center',
+	    width: 130
 	}
+
 });

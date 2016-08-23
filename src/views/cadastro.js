@@ -95,11 +95,13 @@ export default class Cadastro extends Component {
 
 						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Confirme a senha" onChangeText={(val) => this.setState({senha2: val})} secureTextEntry={true}/>
 
-						<ParkoButton onPress={this.cadastrar.bind(this)} texto="Cadastrar"/>
-						<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
-						<Text>
-				            {this.state.erro}
-				        </Text>
+						<View style={{alignItems: 'center', marginTop: 30}}>
+							<ParkoButton onPress={this.cadastrar.bind(this)} texto="Cadastrar" tamanho="medio"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar" tamanho="medio"/>
+							<Text>
+					            {this.state.erro}
+					        </Text>
+					    </View>
 				    </View>
 			    </Background>
 			</View>

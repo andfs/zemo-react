@@ -120,8 +120,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<ParkoButton onPress={this.reservar.bind(this)} texto="Cadastrar"/>
-							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
+							<ParkoButton onPress={this.reservar.bind(this)} texto="Reservar" tamanho="pequeno"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar" tamanho="pequeno"/>
 						</View>
 						<Text>
 				            {this.state.erro}
@@ -166,8 +166,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<ParkoButton onPress={this.reservar.bind(this)} texto="Cadastrar"/>
-							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
+							<ParkoButton onPress={this.reservar.bind(this)} texto="Reservar" tamanho="pequeno"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar" tamanho="pequeno"/>
 						</View>
 						<Text>
 				            {this.state.erro}
@@ -209,8 +209,8 @@ export default class NovaReserva extends Component {
 						</View>
 
 						<View style={styles.botoes}>
-							<ParkoButton onPress={this.reservar.bind(this)} texto="Cadastrar"/>
-							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
+							<ParkoButton onPress={this.reservar.bind(this)} texto="Reservar" tamanho="pequeno"/>
+							<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar" tamanho="pequeno"/>
 						</View>
 						<Text>
 				            {this.state.erro}

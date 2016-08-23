@@ -15,6 +15,7 @@ import ParkoNavigator from './parkoNavigator';
 import Meteor, { connectMeteor, Accounts } from 'react-native-meteor';
 import Loading from './comp/loading';
 import Background from './comp/background';
+import ParkoButton from './comp/parkoButton';
 import { stylesGeral, color } from './estilos/geral';
 
 const FBSDK = require('react-native-fbsdk');
@@ -181,19 +182,19 @@ export default class Login extends Component {
                     onChangeText={(val) => this.setState({senha: val})}
                     secureTextEntry={true}/>
 
-                <TouchableHighlight onPress={this.loginProprio.bind(this)}>
-                    <Text style={{color: color.light1}}>Login</Text>
-                </TouchableHighlight>
-                
                 <TouchableHighlight style={styles.esqueciSenha} onPress={this.recuperarSenha.bind(this)}>
                   <Text style={{color: color.light2, textDecorationLine: 'underline'}}>Esqueci minha senha</Text>
                 </TouchableHighlight>
+
+                <View style={{marginBottom: 10, marginTop: 15}}>
+                  <ParkoButton texto="Login" onPress={this.loginProprio.bind(this)}/>
+                </View>
                 
                 <Text style={stylesGeral.error}>
                   {this.state.erro}
                 </Text>
 
-                <View style={{marginTop: 110}}>
+                <View style={{marginTop: 90}}>
                   <TouchableHighlight onPress={this.cadastrar.bind(this)}>
                     <Text style={{color: color.light2, textDecorationLine: 'underline'}}>Ainda não possui uma conta? Cadastra-se</Text>
                   </TouchableHighlight>
