@@ -120,38 +120,51 @@ export default class MenuView extends Component {
 	render() {
 		return(
 			<View style={estiloMenu.drawer}>
-				<TouchableOpacity>
-					<Text>Hoe</Text>
+				<TouchableOpacity style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Home</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={this.pagamento.bind(this)}>
-					<Text>Pagamento</Text>
+				<TouchableOpacity onPress={this.pagamento.bind(this)} style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Pagamento</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={this.reservarVagas.bind(this)}>
-					<Text>Reservar Vaga</Text>
+				<TouchableOpacity onPress={this.reservarVagas.bind(this)} style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Reservar Vaga</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={this.pagar.bind(this)}>
-					<Text>Pagar</Text>
+				<TouchableOpacity onPress={this.pagar.bind(this)} style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Pagar</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={this.meusPontos.bind(this)}>
-					<Text>Meus Pontos</Text>
+				<TouchableOpacity onPress={this.meusPontos.bind(this)} style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Meus Pontos</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity>
-					<Text>Meus Vouchers</Text>
+				<TouchableOpacity style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Meus Vouchers</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={this.minhasPlacas.bind(this)}>
-					<Text>Minhas Placas</Text>
+				<TouchableOpacity onPress={this.minhasPlacas.bind(this)} style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Minhas Placas</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={this.logout.bind(this)}>
-					<Text>Sair</Text>
+				<TouchableOpacity onPress={this.logout.bind(this)} style={styles.itemMenu}>
+					<Text style={styles.fontMenu}>Sair</Text>
 				</TouchableOpacity>
 			</View>
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+  itemMenu: {
+  	height: 44,
+  	paddingLeft: 12,
+  	paddingTop: 10,
+  	marginTop: 4
+  },
+  fontMenu: {
+  	fontSize: 16
+  }
+  
+});
