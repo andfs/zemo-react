@@ -14,6 +14,7 @@ import Loading from '../comp/loading';
 import Moment from 'moment';
 import convertePlaca from '../functions/funcoesPlacas';
 import ParkoButton from '../comp/parkoButton';
+import { stylesGeral, color } from '../estilos/geral';
 
 export default class CartoesCredito extends Component {
 
@@ -147,6 +148,9 @@ export default class CartoesCredito extends Component {
 		else if(!this.state.cartaoOk){
 			return(
 				<View style={styles.container}>
+					<View style={stylesGeral.titleContainer}>
+						<Text style={stylesGeral.title}>Cartão de Crédito</Text>
+					</View>
 					{botao}
 				</View>
 			);
@@ -155,6 +159,9 @@ export default class CartoesCredito extends Component {
 			return(
 				<View>
 					<View style={styles.container}>
+						<View style={stylesGeral.titleContainer}>
+							<Text style={stylesGeral.title}>Cartão de Crédito</Text>
+						</View>
 						{botao}
 					</View>
 					<View style={styles.infoContainer}>
@@ -190,6 +197,9 @@ export default class CartoesCredito extends Component {
 				return(
 					<View>
 						<View style={styles.container}>
+							<View style={stylesGeral.titleContainer}>
+								<Text style={stylesGeral.title}>Cartão de Crédito</Text>
+							</View>
 							<ParkoButton onPress={this.onPress.bind(this)} texto="Editar Cartão"/>
 						</View>
 						<View style={styles.infoContainer}>
@@ -223,6 +233,9 @@ export default class CartoesCredito extends Component {
 				return(
 					<View>
 						<View style={styles.container}>
+							<View style={stylesGeral.titleContainer}>
+								<Text style={stylesGeral.title}>Cartão de Crédito</Text>
+							</View>
 							<ParkoButton onPress={this.onPress.bind(this)} texto="Editar Cartão"/>
 						</View>
 						<View style={styles.infoContainer}>

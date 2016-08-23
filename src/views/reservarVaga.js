@@ -16,6 +16,7 @@ import Loading from '../comp/loading';
 import NovaReserva from './novaReserva';
 import TabNavigator from 'react-native-tab-navigator';
 import Moment from 'moment';
+import { stylesGeral, color } from '../estilos/geral';
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
 
 const historyIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEK0lEQVRoQ82ajXEUMQyFlQqACiAVABUAFQAVABUAFQAVkFQAVABUkKQCoAJIBUAFMN+O343Wtz9eW87FMzuXm3FsPT3pWdbekcWNO2b2wMzupYfvPH78MjOe7+m5SN+brThqXAFDn5nZ8wmjS5cG2ImZfW0BVQsEAG8SABn818zOk6f5lPc9ILH0MLHG5w034aOZvasBtBXITTN7nwH4ZGZf0lPKgp/3xMx4YFYDQK/N7E/pgluAsNkHMwMM3icceIo3WzEKtgjRV4kl1n1R6qBSILDABgximb8JnZLxLU26XzI55RqMIBwMnAU7i2MNCN7/bGbEMiwAgE22jH9p8tpe+ZqwAwhyiJx7usT+0uKAOEtJCQjAIJtbRy0Q9kHKAQEY9n40B2YJCCAw/kdKxtJQyoG2ABEYouBuyheY2RtzQKD0ZQonvFILgg1bgeTMnLp83QGaAoI6kRct4eQ9FgEkBwMrSP4sEPLiZ5JYpG9rYk+xHgWEtREAjgCk+djnS84IhnMwIbEwEzEigWAPyY80cxADbBgeCAcSbBBSrXnRI7S0JnaiYCgZrAz564GIDWqdtxFUpDWiGWFZ7KPW27EiIGKDSbcCy44o1cr96u0dWBGQPYTXnBHMUwRRvpwICLkByj1ZCwDUI7QwS8cEOXIMEJ/kyG/06AUEO5HhIekBIm2OlNyequXX5lB8TLkPEJUj0WqlDXsyotw+BYgOGCpL/o4ePYFQ1FLcXgBEib47XAKRoPU6k/iE9cjBwc3FbZDfXh5TyHrDe4TvYH9PIL9T8emBoDIcuJGjOxBJozf6sqH/NQe+KxDOI2I37zR2DS1Oxtu+kmzk3d/1YYDvsENJEVmMYqYO88to+fUguOsjj1F9ryn/juQ36kC8ahAAGx2IESXKIUAAZFSiKM5qpfFQIAAiiR+KRoYSvqaMR504Ya8iJ3yeqIwfJF1AaIXS3x1d6AvVS93H3omdmzN5sdq7OhaCONS02asuBvVqPvQAK6Xdaz74w4Wk5xVAS5u0h/FaEzbIS0Rmsh3kWUHWJpvFPS0sXFvN9dkGHeuAEia4B0e1TAvtK5omUaKJCDO7qmGpic0kbo0170SKrNo4CYmHDZy92sTW2kqm65IvHkTxawWB0V0eRvDAoZIfEHTg+Zzt9Ky9egMMb4oOFWaeicXKYe0FJfGIgtHGBwztyYh3JiXpwRszqltsgAmK29krwRqQPGf4DksoWq9QQ40IJUoexmRO5J4oBcL/UaTBBtKMZxAEtDwKkH7XolskEgsLo1dsc1RuAaJzBgD5zy3YDPprBi1PnLR7+5QcxJlRfLvcCsSXCXjOA2JT/6MayuucLbxOf8D/qMY3zmGYdTezXAvEA8KbeA8DawaAYRlWNwPQhq1AvOF4W55GNuV9P0cs6Ydn+jlUjQNG//Mf/jcXnWbBbwoAAAAASUVORK5CYII=";
@@ -118,6 +119,9 @@ export default class ReservarVagas extends Component {
 		let context = this;
 		return (
 			<View style={{flex: 1}}> 
+				<View style={stylesGeral.titleContainer}>
+					<Text style={stylesGeral.title}>Reserva de Vagas</Text>
+				</View>
 		      	<GooglePlacesAutocomplete
 			        placeholder='Digite o endereço de onde quer ir'
 			        minLength={3} // minimum length of text to search
@@ -217,6 +221,9 @@ export default class ReservarVagas extends Component {
 			if(!reservas || reservas.length == 0) {
 				return(
 					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}> 
+						<View style={stylesGeral.titleContainer}>
+							<Text style={stylesGeral.title}>Reserva de Vagas</Text>
+						</View>
 						<Text>Você não possui nenhuma reserva.</Text>
 					</View>
 				);
@@ -224,6 +231,9 @@ export default class ReservarVagas extends Component {
 			else {
 				return(
 					<View style={{flex: 1}}> 
+						<View style={stylesGeral.titleContainer}>
+							<Text style={stylesGeral.title}>Reserva de Vagas</Text>
+						</View>
 						<MeteorComplexListView
 						  elements={this.getElements.bind(this)}
 						  renderRow={this.renderItem.bind(this)}

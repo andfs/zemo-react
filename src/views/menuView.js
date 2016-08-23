@@ -125,7 +125,7 @@ export default class MenuView extends Component {
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={this.pagamento.bind(this)} style={styles.itemMenu}>
-					<Text style={styles.fontMenu}>Pagamento</Text>
+					<Text style={styles.fontMenu}>Meu Cartão de Crédito</Text>
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={this.reservarVagas.bind(this)} style={styles.itemMenu}>

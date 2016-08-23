@@ -12,6 +12,7 @@ import {
 import Meteor, { createContainer, MeteorComplexListView } from 'react-native-meteor';
 import NovaPlaca from './novaPlaca';
 import ParkoButton from '../comp/parkoButton';
+import { stylesGeral, color } from '../estilos/geral';
 
 export default class MinhasPlacas extends Component {
 
@@ -23,6 +24,9 @@ export default class MinhasPlacas extends Component {
 		if(item) {
 			return (
 				<View style={styles.container}>
+					<View style={stylesGeral.titleContainer}>
+						<Text style={stylesGeral.title}>Minhas Placas</Text>
+					</View>
 					<View style={styles.carContainer}>
 						<View style={styles.infoContainer}>
 							<Text style={styles.placa}>{item.placa}</Text>
@@ -47,7 +51,7 @@ export default class MinhasPlacas extends Component {
 	}
 
 	getElements() {
-		return Meteor.user().placas ? Meteor.user().placas : [];
+		return Meteor.user() ? Meteor.user().placas ? Meteor.user().placas : [] : [];
 	}
 
 	novaPlaca() {
@@ -109,7 +113,6 @@ const styles = StyleSheet.create({
   },
   carContainer: {
   	flexDirection: 'row',
-	paddingTop: 20,
 	paddingBottom: 10,
 	left: 10
   },

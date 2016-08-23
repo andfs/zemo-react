@@ -22,6 +22,10 @@ const stylesGeral = StyleSheet.create({
 		borderBottomWidth: 1,
 		textDecorationLine: 'underline',
 		marginTop: 5
+	},
+	titleContainer: {
+		alignItems: 'center',
+		marginBottom: 30,
 	}
 });
 
