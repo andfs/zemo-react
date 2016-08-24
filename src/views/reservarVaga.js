@@ -17,6 +17,8 @@ import NovaReserva from './novaReserva';
 import TabNavigator from 'react-native-tab-navigator';
 import Moment from 'moment';
 import ParkoTitulo from '../comp/parkoTitulo';
+import ParkoButton from '../comp/parkoButton';
+import { color } from '../estilos/geral';
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
 
 const historyIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEK0lEQVRoQ82ajXEUMQyFlQqACiAVABUAFQAVABUAFQAVkFQAVABUkKQCoAJIBUAFMN+O343Wtz9eW87FMzuXm3FsPT3pWdbekcWNO2b2wMzupYfvPH78MjOe7+m5SN+brThqXAFDn5nZ8wmjS5cG2ImZfW0BVQsEAG8SABn818zOk6f5lPc9ILH0MLHG5w034aOZvasBtBXITTN7nwH4ZGZf0lPKgp/3xMx4YFYDQK/N7E/pgluAsNkHMwMM3icceIo3WzEKtgjRV4kl1n1R6qBSILDABgximb8JnZLxLU26XzI55RqMIBwMnAU7i2MNCN7/bGbEMiwAgE22jH9p8tpe+ZqwAwhyiJx7usT+0uKAOEtJCQjAIJtbRy0Q9kHKAQEY9n40B2YJCCAw/kdKxtJQyoG2ABEYouBuyheY2RtzQKD0ZQonvFILgg1bgeTMnLp83QGaAoI6kRct4eQ9FgEkBwMrSP4sEPLiZ5JYpG9rYk+xHgWEtREAjgCk+djnS84IhnMwIbEwEzEigWAPyY80cxADbBgeCAcSbBBSrXnRI7S0JnaiYCgZrAz564GIDWqdtxFUpDWiGWFZ7KPW27EiIGKDSbcCy44o1cr96u0dWBGQPYTXnBHMUwRRvpwICLkByj1ZCwDUI7QwS8cEOXIMEJ/kyG/06AUEO5HhIekBIm2OlNyequXX5lB8TLkPEJUj0WqlDXsyotw+BYgOGCpL/o4ePYFQ1FLcXgBEib47XAKRoPU6k/iE9cjBwc3FbZDfXh5TyHrDe4TvYH9PIL9T8emBoDIcuJGjOxBJozf6sqH/NQe+KxDOI2I37zR2DS1Oxtu+kmzk3d/1YYDvsENJEVmMYqYO88to+fUguOsjj1F9ryn/juQ36kC8ahAAGx2IESXKIUAAZFSiKM5qpfFQIAAiiR+KRoYSvqaMR504Ya8iJ3yeqIwfJF1AaIXS3x1d6AvVS93H3omdmzN5sdq7OhaCONS02asuBvVqPvQAK6Xdaz74w4Wk5xVAS5u0h/FaEzbIS0Rmsh3kWUHWJpvFPS0sXFvN9dkGHeuAEia4B0e1TAvtK5omUaKJCDO7qmGpic0kbo0170SKrNo4CYmHDZy92sTW2kqm65IvHkTxawWB0V0eRvDAoZIfEHTg+Zzt9Ky9egMMb4oOFWaeicXKYe0FJfGIgtHGBwztyYh3JiXpwRszqltsgAmK29krwRqQPGf4DksoWq9QQ40IJUoexmRO5J4oBcL/UaTBBtKMZxAEtDwKkH7XolskEgsLo1dsc1RuAaJzBgD5zy3YDPprBi1PnLR7+5QcxJlRfLvcCsSXCXjOA2JT/6MayuucLbxOf8D/qMY3zmGYdTezXAvEA8KbeA8DawaAYRlWNwPQhq1AvOF4W55GNuV9P0cs6Ydn+jlUjQNG//Mf/jcXnWbBbwoAAAAASUVORK5CYII=";
@@ -105,9 +107,7 @@ export default class ReservarVagas extends Component {
 					</View>
 					<View style={styles.infoContainerRight}>
 						<View style={{flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}}>
-							<TouchableOpacity onPress={()=> this.novaReserva(item)}>
-								<Text style={styles.placa}>reservar</Text>
-							</TouchableOpacity>
+							<ParkoButton texto="OK" tamanho="menor" onPress={()=> this.novaReserva(item)}/>
 						</View>
 					</View>
 				</View>
@@ -161,7 +161,7 @@ export default class ReservarVagas extends Component {
 			      />
 
 			      <View style={{flex: 1}}>
-			      	<ListView dataSource={this.state.estacionamentos} renderRow={this.renderRow.bind(this)}/>
+			      	<ListView dataSource={this.state.estacionamentos} renderRow={this.renderRow.bind(this)} style={styles.list}/>
 			      </View>
 		    </View>
 		);
@@ -228,7 +228,7 @@ export default class ReservarVagas extends Component {
 				return(
 					<View style={{flex: 1}}> 
 						<ParkoTitulo texto="Minhas Reservas"/>
-						<MeteorComplexListView
+						<MeteorComplexListView style={styles.list}
 						  elements={this.getElements.bind(this)}
 						  renderRow={this.renderItem.bind(this)}
 						/>
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
 	flexDirection: 'column',
-	flex: 1
+	flex: 2
   },
   infoContainerRight: {
   	flex: 1,
@@ -336,7 +336,8 @@ const styles = StyleSheet.create({
   placa: {
   	fontWeight: 'bold',
   	fontSize: 24,
-  	marginBottom: 10
+  	marginBottom: 10,
+  	color: color.light2
   },
   cancelar: {
   	fontWeight: 'bold',
@@ -344,22 +345,20 @@ const styles = StyleSheet.create({
   	color: 'red'
   },
   infoCarro: {
-  	fontSize: 10
+  	fontSize: 10,
+  	color: color.dark1
   },
   chegadaPrevista: {
   	fontSize: 10,
   	fontWeight: 'bold',
   	textDecorationLine: 'underline'
   },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+  list: {
+    borderColor: color.dark3,
+    borderTopColor: color.dark3,
+    borderTopWidth: 1,
     borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
+    marginTop: 10
   },
   acoes: {
   	flexDirection: 'row',
