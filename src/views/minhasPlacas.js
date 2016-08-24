@@ -12,7 +12,7 @@ import {
 import Meteor, { createContainer, MeteorComplexListView } from 'react-native-meteor';
 import NovaPlaca from './novaPlaca';
 import ParkoButton from '../comp/parkoButton';
-import { stylesGeral, color } from '../estilos/geral';
+import ParkoTitulo from '../comp/parkoTitulo';
 
 export default class MinhasPlacas extends Component {
 
@@ -24,9 +24,7 @@ export default class MinhasPlacas extends Component {
 		if(item) {
 			return (
 				<View style={styles.container}>
-					<View style={stylesGeral.titleContainer}>
-						<Text style={stylesGeral.title}>Minhas Placas</Text>
-					</View>
+					<ParkoTitulo texto="Minhas Placas"/>
 					<View style={styles.carContainer}>
 						<View style={styles.infoContainer}>
 							<Text style={styles.placa}>{item.placa}</Text>

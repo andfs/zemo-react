@@ -15,6 +15,7 @@ import DatePicker from 'react-native-datepicker';
 import Moment from 'moment';
 import convertePlaca from '../functions/funcoesPlacas';
 import ParkoButton from '../comp/parkoButton';
+import ParkoTitulo from '../comp/parkoTitulo';
 
 
 export default class NovaReserva extends Component {
@@ -89,6 +90,7 @@ export default class NovaReserva extends Component {
 			if(placas && placas.length == 1) {
 				return(
 					<View style={styles.container}>
+						<ParkoTitulo texto="Nova Reserva"/>
 						<View style={styles.linha}>
 							<Text style={styles.texto}>Placa</Text>
 							<TextInput value={placas.placa} editable={false}/>
@@ -132,6 +134,7 @@ export default class NovaReserva extends Component {
 			else if(placas) {
 				return(
 					<View style={styles.container}>
+						<ParkoTitulo texto="Nova Reserva"/>
 						<View style={styles.linha}>
 							<Text style={styles.texto}>Placa</Text>
 							<Picker onValueChange={(placa) => this.setState({placa: placa})} selectedValue={this.state.placa}>
@@ -178,6 +181,7 @@ export default class NovaReserva extends Component {
 			else {
 				return(
 					<View style={styles.container}>
+						<ParkoTitulo texto="Nova Reserva"/>
 						<View style={styles.linha}>
 							<Text style={styles.texto}>Placa</Text>
 							<TextInput value={placas.placa} onChangeText={(val) => this.setState({placa: val})}/>

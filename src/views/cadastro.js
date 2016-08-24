@@ -11,7 +11,8 @@ import Meteor from 'react-native-meteor';
 import ParkoNavigator from '../parkoNavigator';
 import Background from '../comp/background';
 import ParkoButton from '../comp/parkoButton';
-import { stylesGeral, color } from '../estilos/geral';
+import ParkoTitulo from '../comp/parkoTitulo';
+import { color } from '../estilos/geral';
 
 export default class Cadastro extends Component {
 
@@ -84,16 +85,14 @@ export default class Cadastro extends Component {
 			<View style={styles.container}>
 				<Background>
 					<View style={styles.innerContainer}>
-						<View style={styles.titleContainer}>
-							<Text style={stylesGeral.title}>Cadastro</Text>
-						</View>
-						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Nome completo" onChangeText={(val) => this.setState({nome: val})}/>
+						<ParkoTitulo texto="Cadastro"/>
+						<TextInput style={styles.input} placeholderTextColor={color.light2} placeholder="Nome completo" onChangeText={(val) => this.setState({nome: val})}/>
 
-						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="E-mail" onChangeText={(val) => this.setState({email: val})} keyboardType="email-address"/>
+						<TextInput style={styles.input} placeholderTextColor={color.light2} placeholder="E-mail" onChangeText={(val) => this.setState({email: val})} keyboardType="email-address"/>
 
-						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Senha" onChangeText={(val) => this.setState({senha: val})} secureTextEntry={true}/>
+						<TextInput style={styles.input} placeholderTextColor={color.light2} placeholder="Senha" onChangeText={(val) => this.setState({senha: val})} secureTextEntry={true}/>
 
-						<TextInput style={styles.input} placeholderTextColor={color.light1} placeholder="Confirme a senha" onChangeText={(val) => this.setState({senha2: val})} secureTextEntry={true}/>
+						<TextInput style={styles.input} placeholderTextColor={color.light2} placeholder="Confirme a senha" onChangeText={(val) => this.setState({senha2: val})} secureTextEntry={true}/>
 
 						<View style={{alignItems: 'center', marginTop: 30}}>
 							<ParkoButton onPress={this.cadastrar.bind(this)} texto="Cadastrar" tamanho="medio"/>

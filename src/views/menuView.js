@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   	height: 44,
   	paddingLeft: 12,
   	paddingTop: 10,
-  	marginTop: 4
+  	marginTop: 5
   },
   fontMenu: {
   	fontSize: 16

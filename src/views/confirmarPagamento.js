@@ -13,9 +13,9 @@ import Meteor, { createContainer } from 'react-native-meteor';
 import { NativeModules } from 'react-native';
 import Loading from '../comp/loading';
 import ParkoButton from '../comp/parkoButton';
+import ParkoTitulo from '../comp/parkoTitulo';
 import convertePlaca from '../functions/funcoesPlacas';
 import Moment from 'moment';
-import { stylesGeral, color } from '../estilos/geral';
 
 export default class ConfirmarPagamento extends Component {
 
@@ -114,9 +114,7 @@ export default class ConfirmarPagamento extends Component {
 			if(movimentacao.length == 0) {
 				return(
 					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<View style={stylesGeral.titleContainer}>
-							<Text style={stylesGeral.title}>Confirmação de Pagamento</Text>
-						</View>
+						<ParkoTitulo texto="Canfirmação de Pagamento"/>
 						<Text>Nenhuma movimentação encontrada com a placa {placa}</Text>
 						<ParkoButton onPress={this.voltar.bind(this)} texto="Voltar"/>
 					</View>
@@ -141,9 +139,7 @@ export default class ConfirmarPagamento extends Component {
 				else if(this.state.pago){
 					return(
 						<View style={styles.container}>
-							<View style={stylesGeral.titleContainer}>
-								<Text style={stylesGeral.title}>Confirmação de Pagamento</Text>
-							</View>
+							<ParkoTitulo texto="Canfirmação de Pagamento"/>
 							<Text>O valor devido ao estacionamento é de:</Text>
 							<View style={styles.valorView}>
 								<Text style={styles.valor}> {this.state.valor} </Text>
@@ -158,9 +154,7 @@ export default class ConfirmarPagamento extends Component {
 				else {
 					return(
 						<View style={styles.container}>
-							<View style={stylesGeral.titleContainer}>
-								<Text style={stylesGeral.title}>Confirmação de Pagamento</Text>
-							</View>
+							<ParkoTitulo texto="Canfirmação de Pagamento"/>
 							<Text>O valor devido ao estacionamento é de:</Text>
 							<View style={styles.valorView}>
 								<Text style={styles.valor}> {this.state.valor} </Text>

@@ -10,7 +10,7 @@ import Loading from '../comp/loading';
 import Moment from 'moment';
 import convertePlaca from '../functions/funcoesPlacas';
 import ParkoButton from '../comp/parkoButton';
-import { stylesGeral, color } from '../estilos/geral';
+import ParkoTitulo from '../comp/parkoTitulo';
 
 export default class MeusPontos extends Component {
 
@@ -29,9 +29,7 @@ export default class MeusPontos extends Component {
 		else {
 			return(
 				<View style={styles.container}>
-					<View style={stylesGeral.titleContainer}>
-							<Text style={stylesGeral.title}>Meus Pontos</Text>
-						</View>
+					<ParkoTitulo texto="Meus Pontos"/>
 					<View style={{alignItems: 'center', justifyContent: 'center'}}>
 						<Text style={styles.pontos}>{pontos}</Text>
 						<Text style={styles.descricao}>Troque seus ponts por horas grátis em estacionamentos.</Text>

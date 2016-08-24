@@ -27,6 +27,7 @@ var Placa = t.struct({
 import Meteor, { createContainer, MeteorComplexListView } from 'react-native-meteor';
 import MinhasPlacas from './minhasPlacas';
 import ParkoButton from '../comp/parkoButton';
+import ParkoTitulo from '../comp/parkoTitulo';
 
 export default class NovaPlaca extends Component {
 
@@ -61,6 +62,7 @@ export default class NovaPlaca extends Component {
 	render() {
 		return (
 	      <View style={styles.container}>
+        <ParkoTitulo texto="Nova Placa"/>
 	        <Form
 	          ref="form"
 	          type={Placa}

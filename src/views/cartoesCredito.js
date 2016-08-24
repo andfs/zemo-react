@@ -14,7 +14,50 @@ import Loading from '../comp/loading';
 import Moment from 'moment';
 import convertePlaca from '../functions/funcoesPlacas';
 import ParkoButton from '../comp/parkoButton';
-import { stylesGeral, color } from '../estilos/geral';
+import ParkoTitulo from '../comp/parkoTitulo';
+import { stylesGeral } from '../estilos/geral';
+
+class ContainerCartao extends Component {
+
+	render() {
+		return(
+			<View style={styles.infoContainer}>
+				<View style={styles.info}>
+					<Text style={stylesGeral.topico}>Nome do titular do cartão:</Text>
+					<Text style={stylesGeral.respostaTopico}>
+						{this.props.nomeTitularCartao}
+					</Text>
+				</View>
+
+				<View style={styles.info}>
+					<Text style={stylesGeral.topico}>Cartão: 
+						{this.props.cartao}
+					</Text>
+					<Text style={stylesGeral.respostaTopico}>
+						{this.props.numeroCartao}
+					</Text>
+				</View>
+
+				<View style={styles.info}>
+					<Text style={stylesGeral.topico}>Validade:</Text>
+					<Text style={stylesGeral.respostaTopico}>
+						{this.props.validade}
+					</Text>
+				</View>
+
+				<View style={styles.center}>
+					<View style={styles.info}>
+						<ParkoButton onPress={this.props.confirmacao} texto="Confirmo as informações acima" tamanho="medio"/>
+					</View>
+
+					<View style={styles.info}>
+						<ParkoButton onPress={this.props.cancelar} texto="Cancelar" tamanho="medio"/>
+					</View>
+				</View>
+			</View>
+		);
+	}
+}
 
 export default class CartoesCredito extends Component {
 
@@ -148,9 +191,7 @@ export default class CartoesCredito extends Component {
 		else if(!this.state.cartaoOk){
 			return(
 				<View style={styles.container}>
-					<View style={stylesGeral.titleContainer}>
-						<Text style={stylesGeral.title}>Cartão de Crédito</Text>
-					</View>
+					<ParkoTitulo texto="Cartão de Crédito" />
 					{botao}
 				</View>
 			);
@@ -159,35 +200,12 @@ export default class CartoesCredito extends Component {
 			return(
 				<View>
 					<View style={styles.container}>
-						<View style={stylesGeral.titleContainer}>
-							<Text style={stylesGeral.title}>Cartão de Crédito</Text>
-						</View>
+						<ParkoTitulo texto="Cartão de Crédito"/>
 						{botao}
 					</View>
-					<View style={styles.infoContainer}>
-						<View style={styles.info}>
-							<Text style={styles.titulo}>Nome do titular do cartão:</Text>
-							<Text>{this.state.cardholderName}</Text>
-						</View>
-
-						<View style={styles.info}>
-							<Text style={styles.titulo}>Cartão: {this.state.cardType}</Text>
-							<Text>{this.state.redactedCardNumber}</Text>
-						</View>
-
-						<View style={styles.info}>
-							<Text style={styles.titulo}>Validade:</Text>
-							<Text>{this.state.expiryMonth}/{this.state.expiryYear}</Text>
-						</View>
-
-						<View style={styles.info}>
-							<ParkoButton onPress={this.confirmacao.bind(this)} texto="Confirmo as informações acima" tamanho="medio"/>
-						</View>
-
-						<View style={styles.info}>
-							<ParkoButton onPress={this.cancelar.bind(this)} texto="Cancelar"/>
-						</View>
-					</View>
+					<ContainerCartao nomeTitularCartao={this.state.cardholderName} cartao={this.state.cardType} 
+						numeroCartao={this.state.redactedCardNumber} validade={this.state.expiryMonth + "/" + this.state.expiryYear}
+						confirmacao={this.confirmacao.bind(this)} cancelar={this.cancelar.bind(this)}/>
 				</View>
 			);
 		}
@@ -197,35 +215,12 @@ export default class CartoesCredito extends Component {
 				return(
 					<View>
 						<View style={styles.container}>
-							<View style={stylesGeral.titleContainer}>
-								<Text style={stylesGeral.title}>Cartão de Crédito</Text>
-							</View>
+							<ParkoTitulo texto="Cartão de Crédito"/>
 							<ParkoButton onPress={this.onPress.bind(this)} texto="Editar Cartão"/>
 						</View>
-						<View style={styles.infoContainer}>
-							<View style={styles.info}>
-								<Text style={styles.titulo}>Nome do titular do cartão:</Text>
-								<Text>{this.state.cardholderName}</Text>
-							</View>
-
-							<View style={styles.info}>
-								<Text style={styles.titulo}>Cartão: {this.state.cardType}</Text>
-								<Text>{this.state.redactedCardNumber}</Text>
-							</View>
-
-							<View style={styles.info}>
-								<Text style={styles.titulo}>Validade:</Text>
-								<Text>{this.state.expiryMonth}/{this.state.expiryYear}</Text>
-							</View>
-
-							<View style={styles.info}>
-								<ParkoButton onPress={this.confirmacao.bind(this)} texto="Confirmo as informações acima" tamanho="medio"/>
-							</View>
-
-							<View style={styles.info}>
-								<ParkoButton onPress={this.cancelar.bind(this)} texto="Cancelar"/>
-							</View>
-						</View>
+						<ContainerCartao nomeTitularCartao={this.state.cardholderName} cartao={this.state.cardType} 
+							numeroCartao={this.state.redactedCardNumber} validade={this.state.expiryMonth + "/" + this.state.expiryYear}
+							confirmacao={this.confirmacao.bind(this)} cancelar={this.cancelar.bind(this)}/>
 					</View>
 				);
 			}
@@ -233,20 +228,18 @@ export default class CartoesCredito extends Component {
 				return(
 					<View>
 						<View style={styles.container}>
-							<View style={stylesGeral.titleContainer}>
-								<Text style={stylesGeral.title}>Cartão de Crédito</Text>
-							</View>
+							<ParkoTitulo texto="Cartão de Crédito"/>
 							<ParkoButton onPress={this.onPress.bind(this)} texto="Editar Cartão"/>
 						</View>
 						<View style={styles.infoContainer}>
 							<View style={styles.info}>
-								<Text style={styles.titulo}>Nome do titular do cartão:</Text>
-								<Text>{this.state.cardholderName}</Text>
+								<Text style={stylesGeral.topico}>Nome do titular do cartão:</Text>
+								<Text style={stylesGeral.respostaTopico}>{this.state.cardholderName}</Text>
 							</View>
 
 							<View style={styles.info}>
-								<Text style={styles.titulo}>Cartão: {this.state.cardType}</Text>
-								<Text>{this.state.redactedCardNumber}</Text>
+								<Text style={stylesGeral.topico}>Cartão: {this.state.cardType}</Text>
+								<Text style={stylesGeral.respostaTopico}>{this.state.redactedCardNumber}</Text>
 							</View>
 
 						</View>
@@ -287,10 +280,12 @@ const styles = StyleSheet.create({
   	marginLeft: 12,
   	marginTop: 10
   },
-  titulo: {
-  	fontWeight: 'bold'
-  },
   info: {
+  	marginTop: 10
+  },
+  center: {
+  	alignItems: 'center',
+  	justifyContent: 'center',
   	marginTop: 10
   }
 });

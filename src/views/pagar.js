@@ -18,7 +18,7 @@ import Loading from '../comp/loading';
 import ConfirmarPagamento from './confirmarPagamento';
 import convertePlaca from '../functions/funcoesPlacas';
 import ParkoButton from '../comp/parkoButton';
-import { stylesGeral, color } from '../estilos/geral';
+import ParkoTitulo from '../comp/parkoTitulo';
 
 export default class Pagar extends Component {
 
@@ -137,9 +137,7 @@ export default class Pagar extends Component {
 		else if(this.state.listaVazia) {
 			return(
 				<View style={styles.container}>
-					<View style={stylesGeral.titleContainer}>
-						<Text style={stylesGeral.title}>Pagamento</Text>
-					</View>
+					<ParkoTitulo texto="Pagamento"/>
 					<Text style={styles.listaVazia}>Nenhum estacionamento encontrado perto de onde você está. Caso esteja dentro do estacionamento, aproxime-se da portaria e clique no botão abaixo.</Text> 
 					<ParkoButton onPress={this.atualizarPosicao.bind(this)} texto="Procurar estacionamento"/>
 				</View>
@@ -169,9 +167,7 @@ export default class Pagar extends Component {
 				else {
 					placasComponente = (
 						<View>
-							<View style={stylesGeral.titleContainer}>
-								<Text style={stylesGeral.title}>Pagamento</Text>
-							</View>
+							<ParkoTitulo texto="Pagamento"/>
 							<Text style={{marginLeft: 5}}>Escolha a placa que está usando</Text>
 							<Picker selectedValue={this.state.placa} onValueChange={(placa) => this.setState({placa: placa})} style={{width: 300}}>
 								{placas.map((placa)=> (
@@ -183,9 +179,7 @@ export default class Pagar extends Component {
 				}
 				return(
 					<View>
-						<View style={stylesGeral.titleContainer}>
-							<Text style={stylesGeral.title}>Pagamento</Text>
-						</View>
+						<ParkoTitulo texto="Pagamento"/>
 				    	{ placasComponente }
 
 				    	<View style={styles.container}>
