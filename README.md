@@ -18,7 +18,7 @@
 
 ### minhasPlacas.js
 - [ ] adicionar fontawesome e colocar icones no lugar do O e do X
-- [ ] trocar estilo do botao de adicionar placa. Fazer um layout padrao para os botoes do sistema
+- [x] trocar estilo do botao de adicionar placa. Fazer um layout padrao para os botoes do sistema
 - [ ] excluir placa
 
 ### novaPlaca.js
