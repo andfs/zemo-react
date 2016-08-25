@@ -207,7 +207,7 @@ export default class Pagar extends Component {
 export default createContainer(params=>{
   const handle = Meteor.subscribe('usuariosPlacas');
   return {
-    placas: Meteor.user().placas,
+    placas: Meteor.user() ? Meteor.user().placas : [],
     ready: handle.ready()
   };
 }, Pagar)
