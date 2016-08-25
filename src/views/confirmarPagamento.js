@@ -16,6 +16,7 @@ import ParkoButton from '../comp/parkoButton';
 import ParkoTitulo from '../comp/parkoTitulo';
 import convertePlaca from '../functions/funcoesPlacas';
 import Moment from 'moment';
+import { color } from '../estilos/geral';
 
 export default class ConfirmarPagamento extends Component {
 
@@ -111,7 +112,7 @@ export default class ConfirmarPagamento extends Component {
 									estacionamentoId: estacionamentoId
 								});
 
-			if(movimentacao.length == 0) {
+			if(movimentacao && movimentacao.length == 0) {
 				return(
 					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 						<ParkoTitulo texto="Canfirmação de Pagamento"/>
@@ -155,11 +156,13 @@ export default class ConfirmarPagamento extends Component {
 					return(
 						<View style={styles.container}>
 							<ParkoTitulo texto="Canfirmação de Pagamento"/>
-							<Text>O valor devido ao estacionamento é de:</Text>
+							<Text style={{color: color.dark1}}>O valor devido ao estacionamento é de:</Text>
 							<View style={styles.valorView}>
 								<Text style={styles.valor}> {this.state.valor} </Text>
 								{this.state.pagando ? null : 
-									<ParkoButton onPress={this.pagar.bind(this)} texto="Confirmar Pagamento"/>
+									<View style={{marginTop: 15}}>
+										<ParkoButton onPress={this.pagar.bind(this)} texto="Confirmar Pagamento"/>
+									</View>
 								}
 							</View>
 						</View>
@@ -192,7 +195,8 @@ const styles = StyleSheet.create({
   },
   valor: {
   	fontWeight: 'bold',
-  	fontSize: 28
+  	fontSize: 28,
+  	color: color.light1
   }
   
 });

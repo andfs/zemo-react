@@ -18,7 +18,8 @@ import Loading from '../comp/loading';
 import ConfirmarPagamento from './confirmarPagamento';
 import convertePlaca from '../functions/funcoesPlacas';
 import ParkoButton from '../comp/parkoButton';
-import ParkoTitulo from '../comp/parkoTitulo';
+import ParkoTitulo from '../comp/parkoTitulo'; 
+import { stylesGeral, color } from '../estilos/geral';
 
 export default class Pagar extends Component {
 
@@ -65,6 +66,12 @@ export default class Pagar extends Component {
 
 	componentDidMount() {
 		this.atualizarPosicao();
+	}
+
+	componentWillReceiveProps(props) {
+		if(props.placas && props.placas.length == 1) {
+			this.setState({placa: convertePlaca(props.placas[0].placa)});
+		}
 	}
 
 	pagar(estacionamento) {
@@ -138,8 +145,10 @@ export default class Pagar extends Component {
 			return(
 				<View style={styles.container}>
 					<ParkoTitulo texto="Pagamento"/>
-					<Text style={styles.listaVazia}>Nenhum estacionamento encontrado perto de onde você está. Caso esteja dentro do estacionamento, aproxime-se da portaria e clique no botão abaixo.</Text> 
-					<ParkoButton onPress={this.atualizarPosicao.bind(this)} texto="Procurar estacionamento"/>
+					<Text style={[styles.listaVazia, stylesGeral.topico]}>Nenhum estacionamento encontrado perto de onde você está. Caso esteja dentro do estacionamento, aproxime-se da portaria e clique no botão abaixo.</Text> 
+					<View style={{marginTop: 30}}>
+						<ParkoButton onPress={this.atualizarPosicao.bind(this)} texto="Procurar estacionamento"/>
+					</View>
 				</View>
 			);
 		}
@@ -152,15 +161,16 @@ export default class Pagar extends Component {
 				let placasComponente = {};
 				if(placas.length == 0) {
 					placasComponente = (
-						<TextInput autoCapitalize="characters" placeholder="Digite a placa do seu carro" onChange={(val)=> this.setState({placa: val})}/>
+						<TextInput style={styles.inputPlaca} autoCapitalize="characters" placeholder="Digite a placa do seu carro" onChangeText={(val)=> this.setState({placa: val})}/>
 					);
 				}
 				else if(placas.length == 1) {
-					let placa = convertePlaca(placas[0].placa);
 					placasComponente = (
-						<View>
-							<Text>Placa utilizada:</Text>
-							<TextInput style={{borderWidth: 0.5, borderColor: '#0f0f0f',}} autoCapitalize="characters" value={placa} onChange={(val)=> this.setState({placa: val, placaAlterada: true})}/>
+						<View style={{marginLeft: 5}}>
+							<Text style={stylesGeral.topico}>Placa utilizada:</Text>
+							<View style={styles.inputPlacaView}>
+								<TextInput style={styles.inputPlaca} autoCapitalize="characters" value={this.state.placa} onChangeText={(val)=> this.setState({placa: val, placaAlterada: true})}/>
+							</View>
 						</View>
 					);
 				}
@@ -168,7 +178,6 @@ export default class Pagar extends Component {
 					placasComponente = (
 						<View>
 							<ParkoTitulo texto="Pagamento"/>
-							<Text style={{marginLeft: 5}}>Escolha a placa que está usando</Text>
 							<Picker selectedValue={this.state.placa} onValueChange={(placa) => this.setState({placa: placa})} style={{width: 300}}>
 								{placas.map((placa)=> (
 									<Picker.Item label={convertePlaca(placa.placa)} value={convertePlaca(placa.placa)} key={placa.placa}/>
@@ -182,7 +191,7 @@ export default class Pagar extends Component {
 						<ParkoTitulo texto="Pagamento"/>
 				    	{ placasComponente }
 
-				    	<View style={styles.container}>
+				    	<View style={styles.containerList}>
 							<ListView
 						      dataSource={this.state.dataSource}
 						      renderRow={this.renderRow.bind(this)}
@@ -197,7 +206,6 @@ export default class Pagar extends Component {
 
 export default createContainer(params=>{
   const handle = Meteor.subscribe('usuariosPlacas');
-
   return {
     placas: Meteor.user().placas,
     ready: handle.ready()
@@ -211,6 +219,14 @@ const styles = StyleSheet.create({
   	justifyContent: 'center',
   	marginTop: 10
   },
+  infor: {
+  	color: color.dark2
+  },
+  containerList: {
+	alignItems: 'center',
+  	justifyContent: 'center',
+  	marginTop: 30
+  },
   placas: {
   	marginTop: 10
   },
@@ -221,7 +237,7 @@ const styles = StyleSheet.create({
   	fontSize: 24
   },
   endereco: {
-  	marginTop: 5
+  	marginTop: 5,
   },
   containerRow: {
   	marginLeft: 5, 
@@ -238,7 +254,7 @@ const styles = StyleSheet.create({
   	fontSize: 24
   },
   listaVazia: {
-  	marginLeft: 5,
+  	marginLeft: 10,
   },
   titulo: {
   	fontWeight: 'bold'
@@ -247,18 +263,19 @@ const styles = StyleSheet.create({
   	marginTop: 10
   },
   primeiraLinha: {
-  	flex: 1
+  	flex: 1,
+  	color: color.light2
   },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1
+  inputPlaca: {
+  	color: color.light2,
+  	borderBottomWidth: 0,
+  	paddingBottom: 3,
+  	borderColor: color.dark3,
+  	width: 100,
+  },
+  inputPlacaView: {
+  	width: 100,
+  	borderColor: color.dark3,
+  	borderWidth: 1,
   }
 });
