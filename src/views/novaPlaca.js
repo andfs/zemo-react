@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 var t = require('tcomb-form-native');
+
 var Form = t.form.Form;
 var Categoria = t.enums({
   C: 'Carro',
@@ -19,7 +20,7 @@ var Categoria = t.enums({
 });
 var Placa = t.struct({
   placa: t.String,
-  carro: t.String,
+  nome_veiculo: t.String,
   cor: t.String,  
   categoria: Categoria
 });
@@ -28,6 +29,9 @@ import Meteor, { createContainer, MeteorComplexListView } from 'react-native-met
 import MinhasPlacas from './minhasPlacas';
 import ParkoButton from '../comp/parkoButton';
 import ParkoTitulo from '../comp/parkoTitulo';
+import { color } from '../estilos/geral';
+
+t.form.Form.stylesheet.textbox.normal.color = color.light2;
 
 export default class NovaPlaca extends Component {
 
@@ -63,11 +67,16 @@ export default class NovaPlaca extends Component {
 		return (
 	      <View style={styles.container}>
         <ParkoTitulo texto="Nova Placa"/>
-	        <Form
-	          ref="form"
-	          type={Placa}
-	        />
-          <ParkoButton onPress={this.onPress.bind(this)} texto="Salvar"/>
+          <View style={{paddingLeft: 10}}>
+            <Form
+              ref="form"
+              type={Placa}
+            />
+          </View>
+          <View style={styles.button}>
+            <ParkoButton onPress={this.onPress.bind(this)} texto="Salvar" tamanho="medio"/>
+            <ParkoButton onPress={()=>this.props.navigator.pop()} texto="Cancelar" tamanho="medio"/>
+          </View>
 	      </View>
 	    );
 	}
@@ -76,18 +85,9 @@ export default class NovaPlaca extends Component {
 const styles = StyleSheet.create({
  container: {
     justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: '#ffffff',
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
+    alignItems: 'center',
     justifyContent: 'center'
   }
 });

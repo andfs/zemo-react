@@ -13,6 +13,8 @@ import Meteor, { createContainer, MeteorComplexListView } from 'react-native-met
 import NovaPlaca from './novaPlaca';
 import ParkoButton from '../comp/parkoButton';
 import ParkoTitulo from '../comp/parkoTitulo';
+import { color } from '../estilos/geral';
+import convertePlaca from '../functions/funcoesPlacas';
 
 export default class MinhasPlacas extends Component {
 
@@ -20,15 +22,22 @@ export default class MinhasPlacas extends Component {
 		Meteor.collection('users').update({_id: Meteor.userId()}, {$pull: {placas: {placa: placa.placa}}});
 	}
 
+	capitalizeFirstLetter(valor) {
+		return valor.charAt(0).toUpperCase() + valor.slice(1);
+	}
+
 	renderRow(item) {
 		if(item) {
+			let placa = convertePlaca(item.placa);
+			let nomeCarro = this.capitalizeFirstLetter(item.carro);
+			let cor = this.capitalizeFirstLetter(item.cor);
 			return (
 				<View style={styles.container}>
 					<ParkoTitulo texto="Minhas Placas"/>
 					<View style={styles.carContainer}>
 						<View style={styles.infoContainer}>
-							<Text style={styles.placa}>{item.placa}</Text>
-							<Text style={styles.infoCarro}>{item.carro} | {item.categoria === 'C' ? 'carro' : item.categoria === 'M' ? 'moto' : 'carro grande'} | {item.cor}</Text>
+							<Text style={styles.placa}>{placa}</Text>
+							<Text style={styles.infoCarro}>{item.categoria === 'C' ? 'Carro' : item.categoria === 'M' ? 'Moto' : 'Carro grande'} | {nomeCarro} | {cor}</Text>
 						</View>
 						<View style={styles.infoContainerRight}>
 							<View style={{flexDirection: 'row', alignItems: 'flex-end', alignSelf: 'flex-end'}}>
@@ -68,19 +77,23 @@ export default class MinhasPlacas extends Component {
 		const { placas } = this.props;
 		if(placas != undefined) {
 			return(
-				<View style={{flex: 1}}>
+				<View>
 					<MeteorComplexListView
 					  elements={this.getElements.bind(this)}
 			          renderRow={this.renderRow.bind(this)}
 			        />
 
-			        <ParkoButton onPress={this.novaPlaca.bind(this)} texto="Adicionar placa"/>
+			        <View style={styles.botaoView}>
+			        	<ParkoButton onPress={this.novaPlaca.bind(this)} texto="Adicionar placa"/>
+			        </View>
 				</View>
 			);	
 		}
 		else {
 			return (
-				<ParkoButton onPress={this.novaPlaca.bind(this)} texto="Adicionar placa"/>
+				<View style={styles.botaoView}>
+					<ParkoButton onPress={this.novaPlaca.bind(this)} texto="Adicionar placa"/>
+				</View>
 			);
 		}
 		
@@ -91,13 +104,18 @@ export default class MinhasPlacas extends Component {
 export default createContainer(params=>{
   Meteor.subscribe('usuariosPlacas');
   return {
-    placas: Meteor.user().placas,
+    placas: Meteor.user() ? Meteor.user().placas : [],
   };
 }, MinhasPlacas)
 
 const styles = StyleSheet.create({
   container: {
   	borderBottomWidth: 1
+  },
+  botaoView: {
+  	alignItems: 'center',
+  	justifyContent: 'center',
+  	marginTop: 20
   },
   infoContainer: {
 	flexDirection: 'column',
@@ -116,21 +134,15 @@ const styles = StyleSheet.create({
   },
   placa: {
   	fontWeight: 'bold',
-  	fontSize: 28
+  	fontSize: 28,
+  	color: color.light2
   },
   infoCarro: {
-  	marginTop: 10,
-  	fontSize: 10
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
+  	marginTop: 5,
+  	fontSize: 11,
+  	marginLeft: 2,
+  	color: color.dark2,
+  	fontWeight: 'bold'
   },
   acoes: {
   	flexDirection: 'row',
