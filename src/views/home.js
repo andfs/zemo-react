@@ -15,6 +15,8 @@ import SegmentedControl from '../comp/segmentedControl';
 import ParkoActionSheetEstacionar from '../comp/actionSheetEstacionar';
 import ParkoActionSheetLiberar from '../comp/actionSheetLiberar';
 import Meteor from 'react-native-meteor';
+import ParkoPushNotification from '../comp/parkoPushNotification'
+
 
 export default class Home extends Component {
 
@@ -275,6 +277,7 @@ export default class Home extends Component {
 	render() {
 		return(
 				<View style={styles.container}>
+					<ParkoPushNotification/>
 				    <MapView style={styles.map}
 				      ref="map"
 				      region={this.state.region}

@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import {
-  Navigator
+  Navigator,
 } from 'react-native';
 
 import Login from './login';
 import Cadastro from './views/cadastro';
 import ParkoNavigator from './parkoNavigator';
 
-
 export default class ParkoNavigatorInicial extends Component {
 
 	render() {
 		return(
-			<Navigator
-				ref="navigator"
-		        initialRoute={{ name: 'login'}}
-		        renderScene={this.renderScene}
-		        style={{flex: 1}}
-		      />
+				<Navigator
+					ref="navigator"
+			        initialRoute={{ name: 'login'}}
+			        renderScene={this.renderScene}
+			        style={{flex: 1}}
+			      />
+		
 		)
 	}
 
