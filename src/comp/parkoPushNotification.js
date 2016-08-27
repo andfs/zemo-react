@@ -3,11 +3,14 @@ import {
 	View, 
 	TouchableHighlight,
 	Text,
-	AppState,
-  	Modal
+  	Modal,
+  	StyleSheet
 } from 'react-native';
 
 import FCM from 'react-native-fcm';
+import Meteor from 'react-native-meteor';
+import { color } from '../estilos/geral';
+import ParkoButton from './parkoButton';
 
 export default class ParkoPushNotification extends Component {
 
@@ -16,40 +19,44 @@ export default class ParkoPushNotification extends Component {
 	
 	  this.state = {
 	  	state: '',
-	  	mostrarModal: false
+	  	mostrarModal: false,
+	  	nomeEstacionamento: '',
+	  	valor: ''
 	  };
 	}
 
 	componentDidMount() {
-		AppState.addEventListener('change', this.handleAppStateChange.bind(this));
 		let context = this;
-		FCM.requestPermissions(); // for iOS
+		
+		FCM.requestPermissions();
 	    FCM.getFCMToken().then(token => {
-	      console.log(token)
-	      // store fcm token in your server
+	    	if(token && token != null) {
+	    		Meteor.call('atualizarToken', token);
+	    	}
 	    });
+
 	    this.notificationUnsubscribe = FCM.on('notification', (notif) => {
-	      
-		    if(context.state.state === 'active' || context.state.state === '') {
-		      	this.setState({mostrarModal: true});
-		    }
-
+	      	this.setState({mostrarModal: true, nomeEstacionamento: notif.nomeEstacionamento, valor: notif.valor});
 	    });
+
 	    this.refreshUnsubscribe = FCM.on('refreshToken', (token) => {
-	      console.log(token)
-	      // fcm token may not be available on first load, catch it here
+	      	if(token && token != null) {
+	    		Meteor.call('atualizarToken', token);
+	    	}
 	    });
 	}
 
-	handleAppStateChange(appState) {
-		this.setState({state: appState});
-	}
-	
 	componentWillUnmount() {
-	    // prevent leaking
 	    this.refreshUnsubscribe();
 	    this.notificationUnsubscribe();
-	    AppState.removeEventListener('change', this.handleAppStateChange.bind(this));
+	}
+
+	confirmar() {
+		this.setState({mostrarModal: false});
+	}
+
+	cancelar() {
+		this.setState({mostrarModal: false});
 	}
 
 	render() {
@@ -58,21 +65,70 @@ export default class ParkoPushNotification extends Component {
 		          animationType={"slide"}
 		          transparent={false}
 		          visible={this.state.mostrarModal}
-		          onRequestClose={() => {alert("Modal has been closed.")}}
+		          onRequestClose={() => {}}
 		          >
-		         <View style={{marginTop: 22}}>
-		          <View>
-		            <Text>Hello World!</Text>
-
-		            <TouchableHighlight onPress={() => {
-		              this.setState({mostrarModal: !this.state.mostrarModal})
-		            }}>
-		              <Text>Hide Modal</Text>
-		            </TouchableHighlight>
-
-		          </View>
-		         </View>
+			        <View style={style.container}>
+			            <Text style={style.titulo}>Confirmação de Mensalista</Text>
+			            <Text style={style.info}>
+			            	Você confirma o cadastro como mensalista ?
+			            </Text>
+			        </View>
+		            <View style={style.infoContainer}>
+		            	<View style={{flexDirection: 'row'}}>
+		            		<Text style={style.valor}>
+			            		Estacionamento:
+			            	</Text>
+			            	<Text>
+			            		{this.state.nomeEstacionamento}
+			            	</Text>
+		            	</View>
+		            	<View style={{flexDirection: 'row'}}>
+		            		<Text style={style.valor}>
+			            		Valor:
+			            	</Text>
+			            	<Text>
+			            		{this.state.valor} por mês
+			            	</Text>
+		            	</View>
+		            </View>
+		            <Text style={{marginLeft: 10, marginTop: 10, fontSize: 10}}>Caso confirme, o valor acima será debitado mensalmente no seu cartão de crédito.</Text> 
+		            <View style={style.botoes}>
+		            	<ParkoButton texto="Confirmo" onPress={this.confirmar.bind(this)} tamanho="medio"/>
+		            	<ParkoButton texto="Cancelar" onPress={this.cancelar.bind(this)} tamanho="medio"/>
+		            </View>
 		        </Modal>
 		);
 	}
 }
+
+const style = StyleSheet.create({
+
+	container: {
+		marginTop: 60,
+		marginBottom: 20,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	botoes: {
+		marginTop: 25,
+		alignItems: 'center'
+	},
+	titulo: {
+		color: color.dark2,
+		fontSize: 24,
+		fontWeight: 'bold'
+	},
+	info: {
+		color: color.dark2,
+		marginLeft: 10
+	},
+	valor: {
+		color: color.dark2,
+		fontWeight: 'bold',
+		marginRight: 3	
+	},
+	infoContainer: {
+		marginLeft: 10,
+		marginTop: 20
+	}
+});
