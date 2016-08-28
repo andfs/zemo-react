@@ -6,7 +6,8 @@ import {
   	Modal,
   	StyleSheet,
   	LayoutAnimation,
-  	TextInput
+  	TextInput,
+  	AsyncStorage
 } from 'react-native';
 
 import FCM from 'react-native-fcm';
@@ -33,13 +34,27 @@ export default class ParkoPushNotification extends Component {
 	  	msg: '',
 	  	cpf: '',
 	  	lastLength: 0,
-	  	showErro: false
+	  	showErro: false,
+	  	idCartao: ''
 	  };
+	}
+
+	async getCartaoKey() {
+		try 
+		{
+		  	const value = await AsyncStorage.getItem('@parko!id@Card');
+		  	if(value !== null) {
+		  		this.setState({idCartao: value});
+		  	}
+		}
+		catch (error) {
+		  	return null;
+		}
 	}
 
 	componentDidMount() {
 		let context = this;
-		
+		this.getCartaoKey().done();
 		FCM.requestPermissions();
 	    FCM.getFCMToken().then(token => {
 	    	if(token && token != null) {
@@ -52,7 +67,7 @@ export default class ParkoPushNotification extends Component {
 	      					mostrarModal: true, 
 	      					nomeEstacionamento: notif.nomeEstacionamento, 
 	      					valor: notif.valor, 
-	      					idEstacionamento: notif.idEstacionamento
+	      					idEstacionamento: notif.estacionamentoId
 	      	});
 	    });
 
@@ -135,7 +150,7 @@ export default class ParkoPushNotification extends Component {
 			dismissKeyboard();
 			this.setState({showBotoes: false, showLoading: true});
 			let context = this;
-			Meteor.call('cadastrarMensalista', Meteor.userId(), this.state.idEstacionamento, this.state.cpf, function (error, result) {
+			Meteor.call('cadastrarMensalista', Meteor.userId(), this.state.idEstacionamento, this.state.cpf, this.state.idCartao, function (error, result) {
 				if(!error) {
 					context.setState({showMsg: true, showLoading: false, msg: 'Cadastro de mensalista realizado com sucesso!', cpf: ''});
 				}
